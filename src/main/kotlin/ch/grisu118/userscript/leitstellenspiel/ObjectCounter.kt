@@ -9,17 +9,25 @@ import kotlin.browser.document
 
 class ObjectCounter : Component {
 
+  var isGrouped = false
+
   init {
     println("init")
   }
 
   override fun initUI(parent: JQuery) {
     parent.append(BUILDINGS_TABLE).append(VEHICLE_TABLE)
+    jQuery("#g118SwitchVehiclesView").change { _ -> groupSwitched() }
   }
 
   override fun update() {
     updateVehicles()
     updateBuildings()
+  }
+
+  private fun groupSwitched() {
+    isGrouped = jQuery("#g118SwitchVehiclesView").prop("checked") as Boolean
+    updateVehicles()
   }
 
   private fun updateBuildings() {
@@ -55,17 +63,29 @@ class ObjectCounter : Component {
     }
     val vehicleTableObject = jQuery("#$VEHICLE_TABLE_BODY")
     vehicleTableObject.empty()
-    count.keys
-      .filter { count.getValue(it) > 0 }
+    val keys = count.keys.filter { count.getValue(it) > 0 }.toMutableSet()
+    if (isGrouped) {
+      for ((name, member) in LSSData.vehicleGroups) {
+        val c = member.map { count.getValue(it) }.sum()
+        val a = member.map { availableCount.getValue(it) }.sum()
+        keys.removeAll(member)
+        vehicleTableObject.append(document.create.tr {
+          td { +name }
+          td {}
+          td { +"$c" }
+          td { +"$a" }
+        })
+      }
+    }
+    keys
       .sortedBy { LSSData.vehicles[it] }
       .forEach {
-        val tr = document.create.tr {
+        vehicleTableObject.append(document.create.tr {
           td { +LSSData.vehicles[it] }
           td {}
           td { +"${count.getValue(it)}" }
           td { +"${availableCount.getValue(it)}" }
-        }
-        vehicleTableObject.append(tr)
+        })
       }
   }
 
@@ -81,6 +101,13 @@ class ObjectCounter : Component {
         div("panel panel-default") {
           div("panel-heading") {
             +"Fahrzeuge"
+            div {
+              style = "float: right;"
+              +"Zusammenfassen"
+              input(InputType.checkBox) {
+                id = "g118SwitchVehiclesView"
+              }
+            }
           }
           div("panel-body") {
             table("table table-bordered table-condensed table-striped table-hover") {

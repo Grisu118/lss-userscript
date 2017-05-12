@@ -12,9 +12,15 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
   var get_create = $module$kotlinx_html_js.kotlinx.html.dom.get_create_4wc2mh$;
   var td = $module$kotlinx_html_js.kotlinx.html.td_vlzo05$;
   var tr = $module$kotlinx_html_js.kotlinx.html.js.tr_9pz0lc$;
+  var toMutableSet = Kotlin.kotlin.collections.toMutableSet_7wnvza$;
+  var sum = Kotlin.kotlin.collections.sum_plj8ka$;
+  var removeAll = Kotlin.kotlin.collections.removeAll_ye1y7v$;
   var set_id = $module$kotlinx_html_js.kotlinx.html.set_id_ueiko3$;
   var setOf = Kotlin.kotlin.collections.setOf_i5x0yv$;
   var set_classes = $module$kotlinx_html_js.kotlinx.html.set_classes_njy09m$;
+  var set_style = $module$kotlinx_html_js.kotlinx.html.set_style_ueiko3$;
+  var InputType = $module$kotlinx_html_js.kotlinx.html.InputType;
+  var input = $module$kotlinx_html_js.kotlinx.html.input_e1g74z$;
   var div = $module$kotlinx_html_js.kotlinx.html.div_ri36nr$;
   var th = $module$kotlinx_html_js.kotlinx.html.th_bncpyi$;
   var tr_0 = $module$kotlinx_html_js.kotlinx.html.tr_lut1f9$;
@@ -88,6 +94,7 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
     LSSData_instance = this;
     this.buildings = ['Feuerwache', 'Feuerwehrschule', 'Rettungswache', 'Rettungsschule', 'Krankenhaus', 'Rettungshubschrauber-Station', 'Polizeiwache', 'Leitstelle', 'Polizeischule', 'THW', 'THW Schule', 'Bereitschaftspolizei', 'Schnelleinsatzgruppe (SEG)', 'Polizeihubschrauber-Station', 'Bereitstellungsraum', 'Wasserrettung'];
     this.vehicles = ['LF 20', 'LF 10', 'DLK 23', 'ELW 1', 'RW', 'GW-A', 'LF 8/6', 'LF 20/16', 'LF 10/6', 'LF 16-TS', 'GW-\xD6l', 'GW-L2-Wasser', 'GW-Messtechnik', 'SW 1000', 'SW 2000', 'SW 2000-Tr', 'SW KatS', 'TLF 2000', 'TLF 3000', 'TLF 8/8', 'TLF 8/18', 'TLF 16/24-Tr', 'TLF 16/25', 'TLF 16/45', 'TLF 20/40', 'TLF 20/40-SL', 'TLF 16', 'GW-Gefahrgut', 'RTW', 'NEF', 'HLF 20', 'RTH', 'FuStW', 'GW-H\xF6henrettung', 'ELW 2', 'leBefKw', 'MTW', 'TSF-W', 'KTW', 'GKW', 'MTW-TZ', 'MzKW', 'LKW K9', 'BRmG R', 'Anh. DLE', 'MLW 5', 'WLF', 'AB-R\xFCst', 'AB-Atemschutz', 'AB-\xD6l', 'GruKw', 'F\xFCKw', 'GefKw', 'GW Dekon-P', 'AB-Dekon-P', 'KdoW-LNA', 'KdoW-OrgL', 'Kran', 'KTW Typ B', 'ELW 1 (SEG)', 'GW-SAN', 'Polizeihubschrauber', 'AB-Schlauch', 'GW-Taucher', 'GW-Wasserrettung', 'LKW 7 Lkr 19 tm', 'Anh MzB', 'Anh SchlB', 'Anh MzAB', 'Tauchkraftwagen', 'MZB', 'AB-MZB'];
+    this.vehicleGroups = [new VehicleGroup('L\xF6schfahrzeuge', [0, 1, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 37]), new VehicleGroup('Schlauchwagen', [11, 13, 14, 15, 16]), new VehicleGroup('R\xFCstfahrzeuge', [4, 30])];
   }
   LSSData.$metadata$ = {
     kind: Kotlin.Kind.OBJECT,
@@ -101,16 +108,58 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
     }
     return LSSData_instance;
   }
+  function VehicleGroup(name, member) {
+    this.name = name;
+    this.member = member;
+  }
+  VehicleGroup.$metadata$ = {
+    kind: Kotlin.Kind.CLASS,
+    simpleName: 'VehicleGroup',
+    interfaces: []
+  };
+  VehicleGroup.prototype.component1 = function () {
+    return this.name;
+  };
+  VehicleGroup.prototype.component2 = function () {
+    return this.member;
+  };
+  VehicleGroup.prototype.copy_pk1j16$ = function (name, member) {
+    return new VehicleGroup(name === void 0 ? this.name : name, member === void 0 ? this.member : member);
+  };
+  VehicleGroup.prototype.toString = function () {
+    return 'VehicleGroup(name=' + Kotlin.toString(this.name) + (', member=' + Kotlin.toString(this.member)) + ')';
+  };
+  VehicleGroup.prototype.hashCode = function () {
+    var result = 0;
+    result = result * 31 + Kotlin.hashCode(this.name) | 0;
+    result = result * 31 + Kotlin.hashCode(this.member) | 0;
+    return result;
+  };
+  VehicleGroup.prototype.equals = function (other) {
+    return this === other || (other !== null && (typeof other === 'object' && (Object.getPrototypeOf(this) === Object.getPrototypeOf(other) && (Kotlin.equals(this.name, other.name) && Kotlin.equals(this.member, other.member)))));
+  };
   function ObjectCounter() {
     ObjectCounter$Companion_getInstance();
+    this.isGrouped = false;
     println('init');
+  }
+  function ObjectCounter$initUI$lambda(this$ObjectCounter) {
+    return function (f) {
+      this$ObjectCounter.groupSwitched_0();
+    };
   }
   ObjectCounter.prototype.initUI_yp3tk2$ = function (parent) {
     parent.append(ObjectCounter$Companion_getInstance().BUILDINGS_TABLE).append(ObjectCounter$Companion_getInstance().VEHICLE_TABLE);
+    jQuery('#g118SwitchVehiclesView').change(ObjectCounter$initUI$lambda(this));
   };
   ObjectCounter.prototype.update = function () {
     this.updateVehicles_0();
     this.updateBuildings_0();
+  };
+  ObjectCounter.prototype.groupSwitched_0 = function () {
+    var tmp$;
+    this.isGrouped = typeof (tmp$ = jQuery('#g118SwitchVehiclesView').prop('checked')) === 'boolean' ? tmp$ : Kotlin.throwCCE();
+    this.updateVehicles_0();
   };
   function ObjectCounter$updateBuildings$lambda(it) {
     return 0;
@@ -185,7 +234,32 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
       return true;
     };
   }
-  function ObjectCounter$updateVehicles$lambda_2(it) {
+  function ObjectCounter$updateVehicles$lambda$lambda(closure$name) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(closure$name);
+    };
+  }
+  function ObjectCounter$updateVehicles$lambda$lambda_0($receiver) {
+  }
+  function ObjectCounter$updateVehicles$lambda$lambda_1(closure$c) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(closure$c.toString());
+    };
+  }
+  function ObjectCounter$updateVehicles$lambda$lambda_2(closure$a) {
+    return function ($receiver) {
+      $receiver.unaryPlus_pdl1vz$(closure$a.toString());
+    };
+  }
+  function ObjectCounter$updateVehicles$lambda_2(closure$name, closure$c, closure$a) {
+    return function ($receiver) {
+      td($receiver, void 0, ObjectCounter$updateVehicles$lambda$lambda(closure$name));
+      td($receiver, void 0, ObjectCounter$updateVehicles$lambda$lambda_0);
+      td($receiver, void 0, ObjectCounter$updateVehicles$lambda$lambda_1(closure$c));
+      td($receiver, void 0, ObjectCounter$updateVehicles$lambda$lambda_2(closure$a));
+    };
+  }
+  function ObjectCounter$updateVehicles$lambda_3(it) {
     return LSSData_getInstance().vehicles[it];
   }
   function ObjectCounter$updateVehicles$lambda$lambda$lambda(closure$it) {
@@ -205,7 +279,7 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
       $receiver.unaryPlus_pdl1vz$(getValue(closure$availableCount, closure$it).toString());
     };
   }
-  function ObjectCounter$updateVehicles$lambda$lambda(closure$it, closure$count, closure$availableCount) {
+  function ObjectCounter$updateVehicles$lambda$lambda_3(closure$it, closure$count, closure$availableCount) {
     return function ($receiver) {
       td($receiver, void 0, ObjectCounter$updateVehicles$lambda$lambda$lambda(closure$it));
       td($receiver, void 0, ObjectCounter$updateVehicles$lambda$lambda$lambda_0);
@@ -214,6 +288,7 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
     };
   }
   ObjectCounter.prototype.updateVehicles_0 = function () {
+    var tmp$_0, tmp$_1;
     var count = withDefault(Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$(), ObjectCounter$updateVehicles$lambda);
     var availableCount = withDefault(Kotlin.kotlin.collections.LinkedHashMap_init_q3lmfv$(), ObjectCounter$updateVehicles$lambda_0);
     jQuery('.building_list_vehicle_element').each(ObjectCounter$updateVehicles$lambda_1(count, this, availableCount));
@@ -221,20 +296,44 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
     vehicleTableObject.empty();
     var $receiver = count.keys;
     var destination = Kotlin.kotlin.collections.ArrayList_init_ww73n8$();
-    var tmp$;
-    tmp$ = $receiver.iterator();
-    while (tmp$.hasNext()) {
-      var element = tmp$.next();
+    var tmp$_2;
+    tmp$_2 = $receiver.iterator();
+    while (tmp$_2.hasNext()) {
+      var element = tmp$_2.next();
       if (getValue(count, element) > 0) {
         destination.add_11rb$(element);
       }
     }
-    var tmp$_0;
-    tmp$_0 = Kotlin.kotlin.collections.sortedWith_eknfly$(destination, new Kotlin.kotlin.comparisons.compareBy$f(ObjectCounter$updateVehicles$lambda_2)).iterator();
-    while (tmp$_0.hasNext()) {
-      var element_0 = tmp$_0.next();
-      var tr_1 = tr(get_create(document), void 0, ObjectCounter$updateVehicles$lambda$lambda(element_0, count, availableCount));
-      vehicleTableObject.append(tr_1);
+    var keys = toMutableSet(destination);
+    if (this.isGrouped) {
+      tmp$_0 = LSSData_getInstance().vehicleGroups;
+      for (tmp$_1 = 0; tmp$_1 !== tmp$_0.length; ++tmp$_1) {
+        var tmp$ = tmp$_0[tmp$_1];
+        var name = tmp$.component1()
+        , member = tmp$.component2();
+        var destination_0 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(member.length);
+        var tmp$_3;
+        for (tmp$_3 = 0; tmp$_3 !== member.length; ++tmp$_3) {
+          var item = member[tmp$_3];
+          destination_0.add_11rb$(getValue(count, item));
+        }
+        var c = sum(destination_0);
+        var destination_1 = Kotlin.kotlin.collections.ArrayList_init_ww73n8$(member.length);
+        var tmp$_4;
+        for (tmp$_4 = 0; tmp$_4 !== member.length; ++tmp$_4) {
+          var item_0 = member[tmp$_4];
+          destination_1.add_11rb$(getValue(availableCount, item_0));
+        }
+        var a = sum(destination_1);
+        removeAll(keys, member);
+        vehicleTableObject.append(tr(get_create(document), void 0, ObjectCounter$updateVehicles$lambda_2(name, c, a)));
+      }
+    }
+    var tmp$_5;
+    tmp$_5 = Kotlin.kotlin.collections.sortedWith_eknfly$(keys, new Kotlin.kotlin.comparisons.compareBy$f(ObjectCounter$updateVehicles$lambda_3)).iterator();
+    while (tmp$_5.hasNext()) {
+      var element_0 = tmp$_5.next();
+      vehicleTableObject.append(tr(get_create(document), void 0, ObjectCounter$updateVehicles$lambda$lambda_3(element_0, count, availableCount)));
     }
   };
   ObjectCounter.prototype.isVehicleAvailable_0 = function (status) {
@@ -247,8 +346,17 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
     this.VEHICLE_TABLE = div_0(get_create(document), void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda(this));
     this.BUILDINGS_TABLE = div_0(get_create(document), void 0, ObjectCounter$Companion$BUILDINGS_TABLE$lambda(this));
   }
+  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda($receiver) {
+    set_id($receiver, 'g118SwitchVehiclesView');
+  }
+  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda($receiver) {
+    set_style($receiver, 'float: right;');
+    $receiver.unaryPlus_pdl1vz$('Zusammenfassen');
+    input($receiver, InputType.checkBox, void 0, void 0, void 0, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda);
+  }
   function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda($receiver) {
     $receiver.unaryPlus_pdl1vz$('Fahrzeuge');
+    div($receiver, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda);
   }
   function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda$lambda$lambda($receiver) {
     $receiver.unaryPlus_pdl1vz$('Fahrzeugtyp');
@@ -268,23 +376,23 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
     th($receiver, void 0, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda$lambda$lambda_1);
     th($receiver, void 0, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda$lambda$lambda_2);
   }
-  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda($receiver) {
+  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda_0($receiver) {
     tr_0($receiver, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda$lambda);
   }
-  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda_0(this$ObjectCounter$) {
+  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda_1(this$ObjectCounter$) {
     return function ($receiver) {
       set_id($receiver, this$ObjectCounter$.VEHICLE_TABLE_BODY);
     };
   }
-  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda(this$ObjectCounter$) {
+  function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda_0(this$ObjectCounter$) {
     return function ($receiver) {
-      thead($receiver, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda);
-      tbody($receiver, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda_0(this$ObjectCounter$));
+      thead($receiver, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda_0);
+      tbody($receiver, void 0, ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda$lambda_1(this$ObjectCounter$));
     };
   }
   function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda_0(this$ObjectCounter$) {
     return function ($receiver) {
-      table($receiver, 'table table-bordered table-condensed table-striped table-hover', ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda(this$ObjectCounter$));
+      table($receiver, 'table table-bordered table-condensed table-striped table-hover', ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda$lambda$lambda_0(this$ObjectCounter$));
     };
   }
   function ObjectCounter$Companion$VEHICLE_TABLE$lambda$lambda$lambda(this$ObjectCounter$) {
@@ -389,6 +497,8 @@ var output = function (_, Kotlin, $module$kotlinx_html_js) {
   Object.defineProperty(package$leitstellenspiel, 'LSSData', {
     get: LSSData_getInstance
   });
+  var package$model = package$leitstellenspiel.model || (package$leitstellenspiel.model = {});
+  package$model.VehicleGroup = VehicleGroup;
   Object.defineProperty(ObjectCounter, 'Companion', {
     get: ObjectCounter$Companion_getInstance
   });
