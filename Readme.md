@@ -1,5 +1,7 @@
 # LSS UserScript
 
+[![Build status](https://team.leber-lfbg.ch/app/rest/builds/buildType:(id:LssUserscript_Build)/statusIcon.svg)](https://team.leber-lfbg.ch/project.html?projectId=LssUserscript&tab=projectOverview)
+
 Dieses Userscript für https://leitstellenspiel.de entstand als Übungsprojekt
 für [Kotlin2JS](https://kotlinlang.org/docs/tutorials/javascript/kotlin-to-javascript/kotlin-to-javascript.html).
 Es soll aber natürlich auch das Spielen erleichtern.
