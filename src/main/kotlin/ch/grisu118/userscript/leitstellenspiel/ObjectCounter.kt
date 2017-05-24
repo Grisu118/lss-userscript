@@ -13,10 +13,6 @@ class ObjectCounter : Component {
   var isGrouped = false
   var showAvailable = true
 
-  init {
-    println("init")
-  }
-
   override fun initUI(parent: JQuery) {
     parent.append(BUILDINGS_TABLE).append(VEHICLE_TABLE)
     jQuery("#g118SwitchVehiclesView").change { _ -> groupSwitched() }
