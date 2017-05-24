@@ -9,7 +9,7 @@ var lss: LSS? = null
  * @author Benjamin Leber
  */
 fun main(args: Array<String>) {
-  println("Hello Kotlin")
+  println("*** LSS UserScript by Grisu118 loaded ***")
   lss = LSS()
 }
 
