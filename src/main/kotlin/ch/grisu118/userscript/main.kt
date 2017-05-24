@@ -13,8 +13,3 @@ fun main(args: Array<String>) {
   lss = LSS()
 }
 
-fun fayeEvent() {
-  println("Faye here")
-  lss?.fayeEvent()
-}
-
