@@ -50,6 +50,8 @@ minifyJs {
   }
 }
 
+minifyJs.dependsOn build
+
 compileKotlin2Js {
   kotlinOptions.outputFile = "${projectDir}/web/output.js"
   kotlinOptions.moduleKind = "plain"
