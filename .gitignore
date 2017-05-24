@@ -46,6 +46,7 @@ gradle-app.setting
 
 # IntelliJ
 /out/
+/web/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -61,3 +62,5 @@ fabric.properties
 .gradle/
 .idea/
 build/
+lssScript.js
+lssScript.min.js
