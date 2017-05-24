@@ -71,9 +71,7 @@ class ObjectCounter : Component {
         keys.removeAll(member)
         vehicleTableObject.append(document.create.tr {
           td { +name }
-          td {}
-          td { +"$c" }
-          td { +"$a" }
+          td { +"$a/$c" }
         })
       }
     }
@@ -82,9 +80,7 @@ class ObjectCounter : Component {
       .forEach {
         vehicleTableObject.append(document.create.tr {
           td { +LSSData.vehicles[it] }
-          td {}
-          td { +"${count.getValue(it)}" }
-          td { +"${availableCount.getValue(it)}" }
+          td { +"${availableCount.getValue(it)}/${count.getValue(it)}" }
         })
       }
   }
@@ -113,10 +109,8 @@ class ObjectCounter : Component {
             table("table table-bordered table-condensed table-striped table-hover") {
               thead {
                 tr {
-                  th { +"Fahrzeugtyp" }
-                  th { +"Fahrzeuggruppe" }
+                  th { +"Typ" }
                   th { +"Anzahl" }
-                  th { +"Verfügbar" }
                 }
               }
               tbody {
