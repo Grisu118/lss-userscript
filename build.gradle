@@ -39,7 +39,9 @@ build.doLast {
     }
   }
 
-  (new File("${projectDir}/lssScript.js")).text = files("${projectDir}/web/kotlin.js", "${projectDir}/web/kotlinx-html-js.js", "${projectDir}/web/output.js").collect{it.getText()}.join("\n")
+  (new File("${projectDir}/lssScript.js")).text = files("${projectDir}/web/kotlin.js", "${projectDir}/web/kotlinx-html-js.js", "${projectDir}/web/output.js").collect {
+    it.getText()
+  }.join("\n")
 }
 
 minifyJs {

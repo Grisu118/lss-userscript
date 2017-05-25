@@ -9,7 +9,7 @@ var lss: LSS? = null
  * @author Benjamin Leber
  */
 fun main(args: Array<String>) {
-  println("*** LSS UserScript by Grisu118 loaded ***")
+  println("*** LSS UserScript v0.2 by Grisu118 loaded ***")
   lss = LSS()
 }
 

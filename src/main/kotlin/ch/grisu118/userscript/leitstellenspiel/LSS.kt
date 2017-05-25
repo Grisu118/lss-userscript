@@ -13,6 +13,7 @@ external val alliance_id: Number = definedExternally
 class LSS {
 
   val objectCounter = ObjectCounter()
+  val aaoHandler = AAOHandler()
 
   init {
     if (window.location.pathname == "/") {
@@ -23,6 +24,8 @@ class LSS {
       if (alliance_id != undefined) {
         faye.subscribe("/private-alliance-" + alliance_id + "de", { fayeEvent() })
       }
+    } else if (window.location.pathname.startsWith("/missions")) {
+      aaoHandler.initUI(jQuery("body"))
     }
   }
 
