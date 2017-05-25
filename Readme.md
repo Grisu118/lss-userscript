@@ -20,6 +20,12 @@ Es soll aber natürlich auch das Spielen erleichtern.
   * Filtern
   * Verstecken der Verfügbaren Fahrzeuge (zeige nur Gesamtzahl)
   * Zusammenfassen von Löschfahrzeugen, Rüstwagen und Schlauchwagen
+* AAO Klick Zähler
+  * ![Click Badges](_files/aao_click_badges.png)
+* Filtern der Fahrzeugliste im Einsatzfenster
+  * Zeige Fahrzeuge welche alarmiert werden
+  ![Vehicle Filter](_files/mission_vehicle_filter.png)
+  * Status des Filters wird gespeichert
 
 ### Haftungsausschluss
 
