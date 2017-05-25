@@ -13,7 +13,7 @@ external val alliance_id: Number = definedExternally
 class LSS {
 
   val objectCounter = ObjectCounter()
-  val aaoHandler = AAOHandler()
+  val aaoHandler = MissionWindowHandler()
 
   init {
     if (window.location.pathname == "/") {
