@@ -25,6 +25,7 @@ Es soll aber natürlich auch das Spielen erleichtern.
 * Filtern der Fahrzeugliste im Einsatzfenster
   * Zeige Fahrzeuge welche alarmiert werden
   ![Vehicle Filter](_files/mission_vehicle_filter.png)
+  * Status des Filters wird gespeichert
 
 ### Haftungsausschluss
 

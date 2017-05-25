@@ -10,10 +10,18 @@ import kotlinx.html.js.style
 import kotlinx.html.span
 import kotlinx.html.style
 import kotlin.browser.document
+import kotlin.browser.localStorage
 
 class MissionWindowHandler : Component {
 
-  var filterVehicles = true
+  var filterVehicles = false
+
+  init {
+    val storageItem = localStorage.getItem("g118FilterVehicles")
+    if (storageItem != null) {
+      filterVehicles = storageItem == "true"
+    }
+  }
 
   override fun initUI(parent: JQuery) {
     initAAOClickHandler(parent)
@@ -23,7 +31,7 @@ class MissionWindowHandler : Component {
   private fun initVehicleFilter() {
     jQuery("#h2_free_vehicles").append(document.create.a {
       classes += "g118FilterVehicleList"
-      style = "color: red;"
+      style = "color: ${if (filterVehicles) "red" else "black"};"
       href = "#"
       span {
         classes = setOf("glyphicon", "glyphicon-filter")
@@ -38,6 +46,7 @@ class MissionWindowHandler : Component {
         filterVehicles = true
         elem.css("color", "red")
       }
+      localStorage.setItem("g118FilterVehicles", filterVehicles.toString())
       filterVehiclesList()
       return@click true
     }
