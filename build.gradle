@@ -24,6 +24,7 @@ repositories {
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
   compile "org.jetbrains.kotlinx:kotlinx-html-js:0.6.3"
+  compile 'com.github.grisu118:logger:0.1'
 }
 
 build.doLast {

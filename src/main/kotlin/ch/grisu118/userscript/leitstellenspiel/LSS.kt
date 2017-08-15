@@ -1,6 +1,5 @@
 package ch.grisu118.userscript.leitstellenspiel
 
-import ch.grisu118.klogger.LogFactory
 import faye
 import jQuery
 import kotlin.browser.window
@@ -12,7 +11,7 @@ external val user_id: Number = definedExternally
 external val alliance_id: Number = definedExternally
 
 class LSS {
-  val logger = LogFactory.logger(this)
+  val logger = LoggerFactory.logger(this)
 
   val objectCounter = ObjectCounter()
   val aaoHandler = MissionWindowHandler()
