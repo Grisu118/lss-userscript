@@ -1,5 +1,6 @@
 package ch.grisu118.userscript.leitstellenspiel
 
+import ch.grisu118.klogger.LogFactory
 import faye
 import jQuery
 import kotlin.browser.window
@@ -11,12 +12,15 @@ external val user_id: Number = definedExternally
 external val alliance_id: Number = definedExternally
 
 class LSS {
+  val logger = LogFactory.logger(this)
 
   val objectCounter = ObjectCounter()
   val aaoHandler = MissionWindowHandler()
+  val vehicleHandler = VehicleWindowHandler()
 
   init {
     if (window.location.pathname == "/") {
+      logger.trace { "Main Window" }
       initializeUI()
       fayeEvent()
 
@@ -25,7 +29,11 @@ class LSS {
         faye.subscribe("/private-alliance-" + alliance_id + "de", { fayeEvent() })
       }
     } else if (window.location.pathname.startsWith("/missions")) {
+      logger.trace { "Mission Window" }
       aaoHandler.initUI(jQuery("body"))
+    } else if (window.location.pathname.startsWith("/vehicles")) {
+      logger.trace { "Vehicles Window" }
+      vehicleHandler.initUI(jQuery("body"))
     }
   }
 

@@ -61,5 +61,11 @@ compileKotlin2Js {
   kotlinOptions.sourceMap = false
 }
 
+task("createRelease") {
+ // Run for release
+}
+
+createRelease.dependsOn minifyJs
+
 group 'ch.grisu118'
 version '1.0-SNAPSHOT'
