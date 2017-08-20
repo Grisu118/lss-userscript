@@ -1,6 +1,7 @@
 package ch.grisu118.userscript
 
 import ch.grisu118.js.logger.Level
+import ch.grisu118.js.logger.LoggerConfig
 import ch.grisu118.js.logger.LoggerFactory
 import ch.grisu118.userscript.leitstellenspiel.LSS
 import org.w3c.dom.get
@@ -15,6 +16,7 @@ var lss: LSS? = null
  * @author Benjamin Leber
  */
 fun main(args: Array<String>) {
+  LoggerConfig.messageTemplate = "%dt %l [%n]: %m"
   val level = localStorage["g118LogLevel"]
   LoggerFactory.loglevel(Regex(".*"), if (level != null) Level.valueOf(level) else Level.INFO)
   LoggerFactory.logger("LSS UserScript").info { "*** v0.3 by Grisu118 loaded ***" }
