@@ -102,4 +102,6 @@ object LSSData {
     VehicleGroup("Löschfahrzeuge", arrayOf(0, 1, 6, 7, 8, 9, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 30, 37)),
     VehicleGroup("Schlauchwagen", arrayOf(11, 13, 14, 15, 16)),
     VehicleGroup("Rüstfahrzeuge", arrayOf(4, 30)))
+
+  val grisu118 = 650
 }

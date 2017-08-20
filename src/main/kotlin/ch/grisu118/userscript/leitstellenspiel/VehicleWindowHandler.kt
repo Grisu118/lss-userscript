@@ -1,11 +1,12 @@
 package ch.grisu118.userscript.leitstellenspiel
 
 import JQuery
+import ch.grisu118.js.logger.LoggerFactory
 import jQuery
 
 class VehicleWindowHandler : Component {
 
-  val logger = LoggerFactory.logger(this)
+  private val logger = LoggerFactory.logger(this)
 
   override fun initUI(parent: JQuery) {
     val vehicleId = parent.find("img.vehicle_image_reload").attr("vehicle_type_id").toInt()

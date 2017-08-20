@@ -1,6 +1,7 @@
 package ch.grisu118.userscript.leitstellenspiel
 
 import JQuery
+import ch.grisu118.js.logger.LoggerFactory
 import jQuery
 import kotlinx.html.classes
 import kotlinx.html.dom.create
@@ -14,7 +15,8 @@ import kotlin.browser.localStorage
 
 class MissionWindowHandler : Component {
 
-  var filterVehicles = false
+  private val logger = LoggerFactory.logger(this)
+  private var filterVehicles = false
 
   init {
     val storageItem = localStorage.getItem("g118FilterVehicles")
@@ -24,8 +26,12 @@ class MissionWindowHandler : Component {
   }
 
   override fun initUI(parent: JQuery) {
-    initAAOClickHandler(parent)
+    if (user_id == LSSData.grisu118) {
+      logger.info { "Activating Special Features for Grisu118!" }
+      initRelaABDHandler(parent)
+    }
     initVehicleFilter()
+    initAAOClickHandler(parent)
   }
 
   private fun initVehicleFilter() {
@@ -91,6 +97,22 @@ class MissionWindowHandler : Component {
       }
       filterVehiclesList()
       return@click true
+    }
+  }
+
+  private fun initRelaABDHandler(parent: JQuery) {
+    val abdId = 7647412
+    val tlfId = 25079
+    jQuery("input[value='$abdId']").change { eventObject ->
+      val target = jQuery(eventObject.target)
+      val selector = jQuery("input[value='$tlfId']")
+      if (target.prop("checked") as Boolean) {
+        logger.trace { "Add Dekon TLF to selection" }
+        selector.prop("checked", true)
+      } else {
+        logger.trace { "Remove Dekon TLF from selection" }
+        selector.prop("checked", false)
+      }
     }
   }
 

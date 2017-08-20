@@ -1,21 +1,16 @@
 package ch.grisu118.userscript.leitstellenspiel
 
+import ch.grisu118.js.logger.LoggerFactory
 import faye
 import jQuery
 import kotlin.browser.window
 
-@JsName("user_id")
-external val user_id: Number = definedExternally
-
-@JsName("alliance_id")
-external val alliance_id: Number = definedExternally
-
 class LSS {
-  val logger = LoggerFactory.logger(this)
+  private val logger = LoggerFactory.logger(this)
 
-  val objectCounter = ObjectCounter()
-  val aaoHandler = MissionWindowHandler()
-  val vehicleHandler = VehicleWindowHandler()
+  private val objectCounter = ObjectCounter()
+  private val aaoHandler = MissionWindowHandler()
+  private val vehicleHandler = VehicleWindowHandler()
 
   init {
     if (window.location.pathname == "/") {
@@ -36,7 +31,7 @@ class LSS {
     }
   }
 
-  fun initializeUI() {
+  private fun initializeUI() {
     var row = jQuery("#$GRISU118_ROW")
     if (row.length == 0) {
       jQuery(".container-fluid:eq(1) > .row:eq(0)").after("<div class='row' id='$GRISU118_ROW'>")
@@ -45,7 +40,7 @@ class LSS {
     objectCounter.initUI(row)
   }
 
-  fun fayeEvent() {
+  private fun fayeEvent() {
     objectCounter.update()
   }
 
