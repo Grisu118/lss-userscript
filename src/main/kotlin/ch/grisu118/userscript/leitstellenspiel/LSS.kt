@@ -1,22 +1,20 @@
 package ch.grisu118.userscript.leitstellenspiel
 
+import ch.grisu118.js.logger.LoggerFactory
 import faye
 import jQuery
 import kotlin.browser.window
 
-@JsName("user_id")
-external val user_id: Number = definedExternally
-
-@JsName("alliance_id")
-external val alliance_id: Number = definedExternally
-
 class LSS {
+  private val logger = LoggerFactory.logger(this)
 
-  val objectCounter = ObjectCounter()
-  val aaoHandler = MissionWindowHandler()
+  private val objectCounter = ObjectCounter()
+  private val aaoHandler = MissionWindowHandler()
+  private val vehicleHandler = VehicleWindowHandler()
 
   init {
     if (window.location.pathname == "/") {
+      logger.trace { "Main Window" }
       initializeUI()
       fayeEvent()
 
@@ -25,11 +23,15 @@ class LSS {
         faye.subscribe("/private-alliance-" + alliance_id + "de", { fayeEvent() })
       }
     } else if (window.location.pathname.startsWith("/missions")) {
+      logger.trace { "Mission Window" }
       aaoHandler.initUI(jQuery("body"))
+    } else if (window.location.pathname.startsWith("/vehicles")) {
+      logger.trace { "Vehicles Window" }
+      vehicleHandler.initUI(jQuery("body"))
     }
   }
 
-  fun initializeUI() {
+  private fun initializeUI() {
     var row = jQuery("#$GRISU118_ROW")
     if (row.length == 0) {
       jQuery(".container-fluid:eq(1) > .row:eq(0)").after("<div class='row' id='$GRISU118_ROW'>")
@@ -38,7 +40,7 @@ class LSS {
     objectCounter.initUI(row)
   }
 
-  fun fayeEvent() {
+  private fun fayeEvent() {
     objectCounter.update()
   }
 

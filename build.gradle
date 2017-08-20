@@ -1,5 +1,5 @@
 buildscript {
-  ext.kotlin_version = '1.1.2-2'
+  ext.kotlin_version = '1.1.4-2'
 
   repositories {
     mavenCentral()
@@ -18,11 +18,13 @@ apply plugin: 'kotlin2js'
 repositories {
   mavenCentral()
   jcenter()
+  maven { url "http://dl.bintray.com/grisu118/kotlin" }
 }
 
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib-js:$kotlin_version"
-  compile "org.jetbrains.kotlinx:kotlinx-html-js:0.6.3"
+  compile "org.jetbrains.kotlinx:kotlinx-html-js:0.6.4"
+  compile 'ch.grisu118.js:jslogger:0.+'
 }
 
 build.doLast {
@@ -39,7 +41,7 @@ build.doLast {
     }
   }
 
-  (new File("${projectDir}/lssScript.js")).text = files("${projectDir}/web/kotlin.js", "${projectDir}/web/kotlinx-html-js.js", "${projectDir}/web/output.js").collect {
+  (new File("${projectDir}/lssScript.js")).text = files("${projectDir}/web/kotlin.js", "${projectDir}/web/kotlinx-html-js.js", "${projectDir}/web/jslogger.js", "${projectDir}/web/output.js").collect {
     it.getText()
   }.join("\n")
 }
@@ -57,8 +59,14 @@ minifyJs.dependsOn build
 compileKotlin2Js {
   kotlinOptions.outputFile = "${projectDir}/web/output.js"
   kotlinOptions.moduleKind = "plain"
-  kotlinOptions.sourceMap = false
+  kotlinOptions.sourceMap = true
 }
 
-group 'ch.grisu118'
-version '1.0-SNAPSHOT'
+task("createRelease") {
+ // Run for release
+}
+
+createRelease.dependsOn minifyJs
+
+group 'ch.grisu118.js'
+version '0.4.0'
