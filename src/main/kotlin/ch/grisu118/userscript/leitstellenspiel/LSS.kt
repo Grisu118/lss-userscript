@@ -9,6 +9,7 @@ class LSS {
   private val logger = LoggerFactory.logger(this)
 
   private val objectCounter = ObjectCounter()
+  private val missionListHandler = MissionListHandler()
   private val aaoHandler = MissionWindowHandler()
   private val vehicleHandler = VehicleWindowHandler()
 
@@ -38,10 +39,12 @@ class LSS {
       row = jQuery("#$GRISU118_ROW")
     }
     objectCounter.initUI(row)
+    missionListHandler.initUI(jQuery("body"))
   }
 
   private fun fayeEvent() {
     objectCounter.update()
+    missionListHandler.update()
   }
 
   companion object {

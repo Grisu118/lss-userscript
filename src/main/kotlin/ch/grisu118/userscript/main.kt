@@ -19,7 +19,8 @@ fun main(args: Array<String>) {
   LoggerConfig.messageTemplate = "%dt %l [%n]: %m"
   val level = localStorage["g118LogLevel"]
   LoggerFactory.loglevel(Regex(".*"), if (level != null) Level.valueOf(level) else Level.INFO)
-  LoggerFactory.logger("LSS UserScript").info { "*** v0.4 by Grisu118 loaded ***" }
+  LoggerFactory.loglevel(Regex("MissionListHandler"), Level.TRACE)
+  LoggerFactory.logger("LSS UserScript").info { "*** v0.5 by Grisu118 loaded ***" }
   lss = LSS()
 
   window.asDynamic().g118UpdateLogLevel = { lvl: String ->

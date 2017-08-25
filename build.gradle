@@ -69,4 +69,4 @@ task("createRelease") {
 createRelease.dependsOn minifyJs
 
 group 'ch.grisu118.js'
-version '0.4.0'
+version '0.5.0'
