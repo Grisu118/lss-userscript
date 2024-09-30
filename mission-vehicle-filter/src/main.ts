@@ -1,4 +1,3 @@
-import "./style.css";
 import { StorageProvider } from "@lightspots/storageprovider";
 
 (() => {
