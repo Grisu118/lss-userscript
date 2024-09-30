@@ -8,7 +8,6 @@ import "./style.css";
       target = target.parentElement as HTMLAnchorElement;
     }
 
-    console.log("target", target.tagName, target.getAttribute("reset"));
     if (target.getAttribute("reset") === "true") {
       // reset btn clicked => remove all badges
       document
