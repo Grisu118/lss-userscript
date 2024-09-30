@@ -5,13 +5,15 @@ import monkey from "vite-plugin-monkey";
 export default defineConfig({
   plugins: [
     monkey({
-      entry: 'src/main.ts',
+      entry: "src/main.ts",
       userscript: {
-        icon: 'https://vitejs.dev/logo.svg',
+        icon: "https://avatars.githubusercontent.com/u/4274139?s=40&v=4",
         namespace: "lss.grisu118.ch",
         match: ["https://www.leitstellenspiel.de/missions/*"],
         license: "MIT",
         author: "Grisu118",
+        description:
+          "Filtert die Fahrzeuge im Alarmfenster und zeigt nur ausgewählte an. Der Filter kann ein / ausgeschaltet werden, der Zustand wird lokal gespeichert.",
       },
     }),
   ],
