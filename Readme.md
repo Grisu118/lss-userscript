@@ -5,6 +5,8 @@
 * UserScript Browser Addon deiner Wahl installiert
 * AAO Counter
   * https://greasyfork.org/de/scripts/510948-aao-counter
+* AAO Marker
+  * https://greasyfork.org/de/scripts/511080-aao-marker
 * Mission Vehicle Filter
   * https://greasyfork.org/de/scripts/510949-mission-vehicle-filter
 * Enhanced S5
