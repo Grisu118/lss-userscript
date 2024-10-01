@@ -1,0 +1,12 @@
+body.dark .ls42-lss-aao-match,
+.ls42-lss-aao-match {
+  border: 1px solid yellow;
+}
+
+.ls42-lss-aao-match span.label-success {
+  background-color: yellow;
+}
+
+.ls42-lss-aao-match span.label-danger {
+  background-color: orange;
+}
