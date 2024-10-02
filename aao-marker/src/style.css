@@ -3,10 +3,10 @@ body.dark .ls42-lss-aao-match,
   border: 1px solid yellow;
 }
 
-.ls42-lss-aao-match span.label-success {
-  background-color: yellow;
+.tab-pane:not(:first-child) .ls42-lss-aao-no-match {
+  filter: brightness(0.6);
 }
 
-.ls42-lss-aao-match span.label-danger {
-  background-color: orange;
+.ls42-lss-aao-category-match {
+  border: 1px solid yellow !important;
 }
