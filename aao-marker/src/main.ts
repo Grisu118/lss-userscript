@@ -77,6 +77,7 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
     aaoStatusBtn.setAttribute("href", "#");
     aaoStatusBtn.setAttribute("aao_id", aaoId.toString());
     aaoStatusBtn.className = "btn btn-xs btn-block";
+    aaoStatusBtn.addEventListener("click", () => applyMatchedAAO());
 
     applyAAOStatus(aaoStatusBtn);
 
