@@ -8,7 +8,7 @@ export function blockHospitals(elem: HTMLDivElement): void {
     const hasRequiredDepartments = extractHospitalHasRequiredDepartments(cells);
     const btn = extractDispatchBtn(cells);
 
-    if (distant > getMaxDistant() || !hasRequiredDepartments) {
+    if (btn && (distant > getMaxDistant() || !hasRequiredDepartments)) {
       btn.className += " disabled";
       btn.setAttribute("disabled", "true");
     }
@@ -23,16 +23,10 @@ export function blockHospitals(elem: HTMLDivElement): void {
     }
     const distant = extractDistant(cells);
     const hasRequiredDepartments = extractHospitalHasRequiredDepartments(cells);
-    const costPercent = Number.parseInt(
-      cells.item(3)?.textContent?.trim()?.replace("%", "") ?? "100",
-    );
+    const costPercent = Number.parseInt(cells.item(3)?.textContent?.trim()?.replace("%", "") ?? "100");
     const btn = extractDispatchBtn(cells);
 
-    if (
-      distant > getMaxDistant() ||
-      !hasRequiredDepartments ||
-      costPercent > getCostLimit()
-    ) {
+    if ((distant > getMaxDistant() || !hasRequiredDepartments || costPercent > getCostLimit()) && btn) {
       btn.className += " disabled";
       btn.setAttribute("disabled", "true");
     }
@@ -40,10 +34,7 @@ export function blockHospitals(elem: HTMLDivElement): void {
 }
 
 function extractDistant(cells: HTMLCollection): number {
-  return Number.parseFloat(
-    cells.item(1)?.textContent?.trim()?.replace("km", "")?.replace(",", ".") ??
-      "-1.0",
-  );
+  return Number.parseFloat(cells.item(1)?.textContent?.trim()?.replace("km", "")?.replace(",", ".") ?? "-1.0");
 }
 
 function extractHospitalHasRequiredDepartments(cells: HTMLCollection): boolean {
@@ -51,6 +42,6 @@ function extractHospitalHasRequiredDepartments(cells: HTMLCollection): boolean {
   return text == "Ja";
 }
 
-function extractDispatchBtn(cells: HTMLCollection): HTMLAnchorElement {
-  return cells.item(cells.length - 1)?.querySelector<HTMLAnchorElement>("a")!;
+function extractDispatchBtn(cells: HTMLCollection): HTMLAnchorElement | undefined {
+  return cells.item(cells.length - 1)?.querySelector<HTMLAnchorElement>("a") ?? undefined;
 }

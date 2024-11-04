@@ -4,6 +4,7 @@ import { drawBuildingsOfControlCenter } from "./buildings/controlCenter";
 
 (() => {
   //
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (window as any).drawLstBuildings = async (id: number, force?: boolean): Promise<void> => {
     const buildings = await fetchBuildings(force ?? false);
     const markers = drawBuildingsOfControlCenter(id, buildings);
