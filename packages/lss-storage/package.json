@@ -1,0 +1,9 @@
+{
+  "name": "@lss/storage",
+  "private": true,
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  }
+}
