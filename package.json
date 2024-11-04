@@ -1,0 +1,30 @@
+{
+  "name": "@lss/userscript",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {},
+  "private": true,
+  "devDependencies": {
+    "@nx/js": "20.0.3",
+    "@nx/vite": "20.0.3",
+    "@nx/web": "20.0.3",
+    "@swc-node/register": "~1.9.1",
+    "@swc/core": "~1.5.7",
+    "@swc/helpers": "~0.5.11",
+    "@types/leaflet": "^1.9.14",
+    "@vitest/ui": "^1.3.1",
+    "nx": "20.0.3",
+    "prettier": "^2.6.2",
+    "tslib": "^2.3.0",
+    "typescript": "~5.5.2",
+    "vite": "^5.0.0",
+    "vite-plugin-monkey": "^4.0.6",
+    "vitest": "^1.3.1"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@lightspots/storageprovider": "^2.0.1"
+  }
+}
