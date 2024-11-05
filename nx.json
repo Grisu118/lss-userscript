@@ -13,7 +13,7 @@
   },
   "nxCloudId": "67291b40ce532e37a71e7615",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "origin/master"
   },
   "plugins": [
     {
