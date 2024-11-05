@@ -1,27 +1,21 @@
-# LSS UserScript
-
-[![Build status](https://team.leber-lfbg.ch/app/rest/builds/buildType:(id:LssUserscript_Build)/statusIcon.svg)](https://team.leber-lfbg.ch/project.html?projectId=LssUserscript&tab=projectOverview)
-
-Dieses Userscript für https://leitstellenspiel.de entstand als Übungsprojekt
-für [Kotlin2JS](https://kotlinlang.org/docs/tutorials/javascript/kotlin-to-javascript/kotlin-to-javascript.html).
-Es soll aber natürlich auch das Spielen erleichtern.
+# LSS UserScripts
 
 ### Installation
 
-* [Tampermonkey](https://tampermonkey.net/) als Addon im Browser aktiviert
-* Klicke auf [diesen Link](https://github.com/Grisu118/lss-userscript/raw/master/script.user.js) und bestätige die Installation
-* Habe Spass :)
+* UserScript Browser Addon deiner Wahl installiert
+* AAO Counter
+  * https://greasyfork.org/de/scripts/510948-aao-counter
+* AAO Marker
+  * https://greasyfork.org/de/scripts/511080-aao-marker
+* Mission Vehicle Filter
+  * https://greasyfork.org/de/scripts/510949-mission-vehicle-filter
+* Enhanced S5
+  * https://greasyfork.org/de/scripts/510950-enhanced-s5
 
 ### Features
 
-* Gebäudeliste
-  * Filtern
-* Fahrzeugliste
-  * Filtern
-  * Verstecken der Verfügbaren Fahrzeuge (zeige nur Gesamtzahl)
-  * Zusammenfassen von Löschfahrzeugen, Rüstwagen und Schlauchwagen
 * AAO Klick Zähler
-  * ![Click Badges](_files/aao_click_badges.png)
+  * ![Click Badges](.files/aao-counter.png)
 * Filtern der Fahrzeugliste im Einsatzfenster
   * Zeige Fahrzeuge welche alarmiert werden
   ![Vehicle Filter](_files/mission_vehicle_filter.png)
