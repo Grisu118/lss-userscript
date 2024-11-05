@@ -2,7 +2,7 @@
 
 Zählt wie oft ein AAO Eintrag schon angeglickt wurde
 
-* ![Click Badges](../..files/aao-counter.png)
+* ![Click Badges](../../.files/aao-counter.png)
 
 ## Funktionen
 * Zählt klicks pro AAO Eintrag
