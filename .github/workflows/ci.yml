@@ -72,8 +72,7 @@ jobs:
           draft: true
           prerelease: false
           body: |
-            Draft release created by the CI workflow.
-            This includes the following JS files:
-            $(find ./dist -name '*user.js' -exec basename {} \;)
+            An update for the different scripts.
+            Used to update the scripts on https://greasyfork.org
           files: ./dist/**
 

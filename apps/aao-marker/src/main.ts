@@ -60,9 +60,15 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
 
   const aaoTabPane = document.querySelector<HTMLAnchorElement>(`.tab-pane:has(.aao.${MATCH_CLASS_NAME})`);
   if (aaoTabPane) {
+    // mark aao tab title
     const aaoCatId = aaoTabPane.id;
     const aaoTabElem = document.querySelector<HTMLAnchorElement>(`#aao-tabs a[href="#${aaoCatId}"]`);
     aaoTabElem?.classList?.add("ls42-lss-aao-category-match");
+
+    // mark all tab-pane elements so that the darkening works
+    document.querySelectorAll("#mission-aao-group .tab-pane").forEach((elem) => {
+      elem.classList.add("ls42-lss-aao-match-found");
+    });
   }
   const aaoElem = document.querySelector<HTMLAnchorElement>(`.aao.${MATCH_CLASS_NAME}`);
 
