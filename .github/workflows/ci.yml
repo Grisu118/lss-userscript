@@ -75,5 +75,5 @@ jobs:
             Draft release created by the CI workflow.
             This includes the following JS files:
             $(find ./dist -name '*user.js' -exec basename {} \;)
-          files: ./dist
+          files: ./dist/**
 
