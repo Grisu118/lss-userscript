@@ -1,7 +1,7 @@
+import { Building } from "@lss/api";
 import { Marker } from "leaflet";
-import { Building } from "./building";
 
-export const drawBuildingsOfControlCenter = (controlCenterId: number, buildings: Building[]): Marker[] => {
+export const drawBuildingsOfDispatchCenter = (controlCenterId: number, buildings: Building[]): Marker[] => {
   const relevantBuildings = buildings.filter((building) => building.leitstelle_building_id === controlCenterId);
 
   return relevantBuildings.map((building) =>
