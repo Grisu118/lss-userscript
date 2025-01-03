@@ -100,16 +100,26 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
 
   // add key event listener
   document.addEventListener("keypress", (ev) => {
+    const target = ev.target as HTMLElement;
+    // description is a div with role textbox
+    if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA")) {
+      // we are typing text, so do nothing
+      return;
+    }
+
     switch (ev.key) {
       case "r":
         resetAAO();
+        ev.stopPropagation();
         break;
       case "v":
         applyMatchedAAO();
+        ev.stopPropagation();
         break;
       case "n":
         if (aaoStatusBtn) {
           setTimeout(() => applyAAOStatus(aaoStatusBtn), 2000);
+          ev.stopPropagation();
         }
         break;
     }
