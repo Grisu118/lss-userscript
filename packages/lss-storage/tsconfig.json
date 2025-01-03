@@ -3,5 +3,5 @@
   "compilerOptions": {
     "outDir": "./out-tsc"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts", "../../typings/**/*", "../../packages/**/*.ts"]
 }

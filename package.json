@@ -29,6 +29,7 @@
   },
   "workspaces": [],
   "dependencies": {
-    "@lightspots/storageprovider": "^2.0.1"
+    "@lightspots/storageprovider": "^2.0.1",
+    "dayjs": "^1.11.13"
   }
 }
