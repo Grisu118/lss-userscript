@@ -22,17 +22,17 @@ dayjs.extend(duration);
 
   let formattedTxt = "";
   if (duration.asMinutes() < 1) {
-    formattedTxt = "Gerade eben";
+    formattedTxt = "jetzt";
   } else if (duration.asHours() < 1) {
-    formattedTxt = `vor ${duration.asMinutes()} Minuten`;
+    formattedTxt = `vor ${Math.floor(duration.asMinutes())} Minuten`;
   } else if (duration.asHours() < 3) {
-    formattedTxt = `vor ${duration.asHours()} Stunden`;
+    formattedTxt = `vor ${Math.floor(duration.asHours())} Stunden`;
   } else if (generationTime.isSame(now, "day")) {
     formattedTxt = `heute um ${generationTime.format("HH:mm:ss")}`;
-  } else if (generationTime.isSame(now.add(1, "day"), "day")) {
+  } else if (generationTime.isSame(now.subtract(1, "day"), "day")) {
     formattedTxt = `gestern um ${generationTime.format("HH:mm:ss")}`;
   } else {
-    formattedTxt = generationTime.format("dd.MM.YYYY HH:mm:ss");
+    formattedTxt = generationTime.format("DD.MM.YYYY HH:mm:ss");
   }
 
   targetElement?.appendChild(document.createTextNode(` | Generierungszeitpunkt: ${formattedTxt}`));
