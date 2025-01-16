@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import "./style.css";
 
 import duration from "dayjs/plugin/duration";
 
@@ -13,6 +14,7 @@ dayjs.extend(duration);
   const generationTimeString = missionInfo.getAttribute("data-generation-time");
   const generationTime = dayjs(generationTimeString);
   const now = dayjs();
+  const cutOffTime = now.hour(3).minute(0).second(0);
 
   // diff in ms
   const diff = now.diff(generationTime);
@@ -35,5 +37,12 @@ dayjs.extend(duration);
     formattedTxt = generationTime.format("DD.MM.YYYY HH:mm:ss");
   }
 
-  targetElement?.appendChild(document.createTextNode(` | Generierungszeitpunkt: ${formattedTxt}`));
+  const timeNode = document.createElement("span");
+
+  if (generationTime.isBefore(cutOffTime)) {
+    timeNode.classList.add("ls42-lss-mission-generation-time-danger");
+  }
+
+  timeNode.innerText = ` | Generierungszeitpunkt: ${formattedTxt}`;
+  targetElement?.appendChild(timeNode);
 })();
