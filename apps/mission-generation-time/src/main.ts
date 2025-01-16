@@ -20,7 +20,7 @@ dayjs.extend(duration);
   const diff = now.diff(generationTime);
   const duration = dayjs.duration(diff);
 
-  const targetElement = missionInfo.querySelector<HTMLSpanElement>("small");
+  const targetElement = missionInfo.querySelector<HTMLSpanElement>(":scope > small");
 
   let formattedTxt = "";
   if (duration.asMinutes() < 1) {
