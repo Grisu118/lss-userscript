@@ -13,7 +13,7 @@ export default defineConfig({
         match: ["https://www.leitstellenspiel.de/missions/*"],
         license: "MIT",
         author: "Grisu118",
-        description: "Zeigt die Zeit wenn ein Einsatz generiert wurde",
+        description: "Zeigt details zum Einsatz an, u.a. Kategorie, Generierungszeitpunkt & erwartete Einnahmen",
       },
     }),
     nxViteTsPaths(),
