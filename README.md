@@ -9,6 +9,8 @@
     * https://greasyfork.org/de/scripts/510948-aao-counter
 * [AAO Marker](apps/aao-marker/README.md)
     * https://greasyfork.org/de/scripts/511080-aao-marker
+* [Mission Info](apps/mission-info/README.md)
+  * https://greasyfork.org/de/scripts/523977-mission-info
 * Mission Vehicle Filter
     * https://greasyfork.org/de/scripts/510949-mission-vehicle-filter
 * Enhanced S5
