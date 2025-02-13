@@ -5,17 +5,19 @@ import { isUpToDate } from "./CachedEntry";
 import { LSS_CACHE_STORAGE } from "./sessionStorage";
 
 const MISSIONS_CACHE_KEY = "MISSIONS";
+const VERSION = 1;
 
 export type CachedMissions = CachedEntry<Mission[]>;
 
 export const getMissions = async (force?: boolean): Promise<CachedMissions> => {
   const cachedMissions = LSS_CACHE_STORAGE.getAsObject<CachedMissions>(MISSIONS_CACHE_KEY);
-  if (cachedMissions && !force && isUpToDate(cachedMissions)) {
+  if (cachedMissions && !force && isUpToDate(cachedMissions, VERSION)) {
     return cachedMissions;
   }
   const missions = await fetchAllMissions();
   const value = {
     timestamp: dayjs().format(),
+    version: VERSION,
     data: missions,
   };
   LSS_CACHE_STORAGE.set(MISSIONS_CACHE_KEY, value);
