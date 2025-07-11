@@ -63,5 +63,7 @@ export enum VehicleType {
   MTF_L = 106,
   LF_L = 107,
   AB_L = 108,
+  MTW_OV = 124,
+  BT_LKW = 133,
   ANH_HOSE_WATER = 143,
 }
