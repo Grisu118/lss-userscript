@@ -6,15 +6,15 @@
 
 * UserScript Browser Addon deiner Wahl installiert
 * [AAO Counter](apps/aao-counter/README.md)
-    * https://greasyfork.org/de/scripts/510948-aao-counter
+    * https://github.com/Grisu118/lss-userscript/releases/latest/download/aao-counter.user.js
 * [AAO Marker](apps/aao-marker/README.md)
-    * https://greasyfork.org/de/scripts/511080-aao-marker
+    * https://github.com/Grisu118/lss-userscript/releases/latest/download/aao-marker.user.js
 * [Mission Info](apps/mission-info/README.md)
-  * https://greasyfork.org/de/scripts/523977-mission-info
+  * https://github.com/Grisu118/lss-userscript/releases/latest/download/mission-info.user.js
 * Mission Vehicle Filter
-    * https://greasyfork.org/de/scripts/510949-mission-vehicle-filter
+    * https://github.com/Grisu118/lss-userscript/releases/latest/download/mission-vehicle-filter.user.js
 * Enhanced S5
-    * https://greasyfork.org/de/scripts/510950-enhanced-s5
+    * https://github.com/Grisu118/lss-userscript/releases/latest/download/enhanced-s5.user.js
 
 
 ### Haftungsausschluss
