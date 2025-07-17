@@ -1,6 +1,6 @@
+import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 import { defineConfig } from "vite";
 import monkey from "vite-plugin-monkey";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -15,6 +15,7 @@ export default defineConfig({
         author: "Grisu118",
         description:
           "Filtert die Fahrzeuge im Alarmfenster und zeigt nur ausgewählte an. Der Filter kann ein / ausgeschaltet werden, der Zustand wird lokal gespeichert.",
+        updateURL: "https://github.com/Grisu118/lss-userscript/releases/latest/download/mission-vehicle-filter.user.js",
       },
     }),
     nxViteTsPaths(),

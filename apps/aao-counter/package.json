@@ -1,11 +1,11 @@
 {
-    "name": "aao-counter",
-    "private": true,
-    "version": "1.0.0",
-    "type": "module",
-    "scripts": {
-      "dev": "vite",
-      "build": "tsc && vite build",
-      "preview": "vite preview"
-    }
+  "name": "aao-counter",
+  "private": true,
+  "version": "1.0.1",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   }
+}
