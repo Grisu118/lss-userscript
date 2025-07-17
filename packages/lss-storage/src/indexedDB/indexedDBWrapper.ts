@@ -1,14 +1,28 @@
-import { CachedEntry } from "./CachedEntry";
+import { Metadata } from "./Metadata";
+
+export enum LSS_INDEXED_DB_KEYS {
+  BUILDINGS = "buildings",
+  MISSIONS = "missions",
+  VEHICLES = "vehicles",
+  METADATA = "metadata",
+}
+
+export interface StoredValue<ID, T> {
+  id: ID;
+  data: T;
+}
 
 class IndexedDBWrapper {
-  private dbName = "lss-cache";
+  private dbName = "ls42.lss-cache";
   private version = 1;
   private db: IDBDatabase | null = null;
 
   async init(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open(this.dbName, this.version);
+    if (this.db) return;
 
+    const request = indexedDB.open(this.dbName, this.version);
+
+    return new Promise((resolve, reject) => {
       request.onerror = () => reject(request.error);
       request.onsuccess = () => {
         this.db = request.result;
@@ -19,147 +33,124 @@ class IndexedDBWrapper {
         const db = (event.target as IDBOpenDBRequest).result;
 
         // Create object stores for each cache type
-        if (!db.objectStoreNames.contains("buildings")) {
-          db.createObjectStore("buildings", { keyPath: "id" });
+        if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.BUILDINGS)) {
+          db.createObjectStore(LSS_INDEXED_DB_KEYS.BUILDINGS, { keyPath: "id" });
         }
-        if (!db.objectStoreNames.contains("missions")) {
-          db.createObjectStore("missions", { keyPath: "id" });
+        if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.MISSIONS)) {
+          db.createObjectStore(LSS_INDEXED_DB_KEYS.MISSIONS, { keyPath: "id" });
         }
-        if (!db.objectStoreNames.contains("vehicles")) {
-          db.createObjectStore("vehicles", { keyPath: "id" });
+        if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.VEHICLES)) {
+          db.createObjectStore(LSS_INDEXED_DB_KEYS.VEHICLES, { keyPath: "id" });
         }
-        if (!db.objectStoreNames.contains("metadata")) {
-          db.createObjectStore("metadata", { keyPath: "key" });
-        }
-      };
-    });
-  }
-
-  async setMetadata(key: string, metadata: CachedEntry<unknown>): Promise<void> {
-    if (!this.db) await this.init();
-
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(["metadata"], "readwrite");
-      const store = transaction.objectStore("metadata");
-
-      const request = store.put({ key, ...metadata });
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
-  }
-
-  async getMetadata(key: string): Promise<CachedEntry<unknown> | null> {
-    if (!this.db) await this.init();
-
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction(["metadata"], "readonly");
-      const store = transaction.objectStore("metadata");
-
-      const request = store.get(key);
-      request.onsuccess = () => {
-        const result = request.result;
-        if (result) {
-          const { key: _, ...metadata } = result;
-          resolve(metadata as CachedEntry<unknown>);
-        } else {
-          resolve(null);
+        if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.METADATA)) {
+          db.createObjectStore(LSS_INDEXED_DB_KEYS.METADATA, { keyPath: "id" });
         }
       };
-      request.onerror = () => reject(request.error);
     });
   }
 
-  async setItem<T>(storeName: string, key: number, item: T): Promise<void> {
+  async setMetadata(id: LSS_INDEXED_DB_KEYS, metadata: Metadata): Promise<void> {
     if (!this.db) await this.init();
 
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
-
-      const request = store.put({ id: key, ...item });
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
+    const store = this.getStore(LSS_INDEXED_DB_KEYS.METADATA, "readwrite");
+    const value: StoredValue<LSS_INDEXED_DB_KEYS, Metadata> = {
+      id: id,
+      data: metadata,
+    };
+    const request = store.put(value);
+    await this.handleRequest(request);
   }
 
-  async getItem<T>(storeName: string, key: number): Promise<T | null> {
+  async getMetadata(key: LSS_INDEXED_DB_KEYS): Promise<Metadata | null> {
     if (!this.db) await this.init();
 
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([storeName], "readonly");
-      const store = transaction.objectStore(storeName);
+    const store = this.getStore(LSS_INDEXED_DB_KEYS.METADATA, "readonly");
+    const request = store.get(key);
+    const result = await this.handleRequest<StoredValue<LSS_INDEXED_DB_KEYS, Metadata>>(request);
 
-      const request = store.get(key);
-      request.onsuccess = () => {
-        const result = request.result;
-        if (result) {
-          const { id: _, ...item } = result;
-          resolve(item as T);
-        } else {
-          resolve(null);
-        }
+    if (result) {
+      return result.data;
+    }
+    return null;
+  }
+
+  async setItem<T>(storeName: LSS_INDEXED_DB_KEYS, id: string, item: T): Promise<void> {
+    if (!this.db) await this.init();
+
+    const store = this.getStore(storeName, "readwrite");
+    const value: StoredValue<string, T> = {
+      id: id,
+      data: item,
+    };
+    const request = store.put(value);
+    await this.handleRequest(request);
+  }
+
+  async getItem<T>(storeName: LSS_INDEXED_DB_KEYS, id: string): Promise<T | null> {
+    if (!this.db) await this.init();
+
+    const store = this.getStore(storeName, "readonly");
+    const request = store.get(id);
+    const result = await this.handleRequest<StoredValue<number, T>>(request);
+
+    if (result) {
+      return result.data;
+    }
+    return null;
+  }
+
+  async getAllItems<T>(storeName: LSS_INDEXED_DB_KEYS): Promise<Record<string, T>> {
+    if (!this.db) await this.init();
+
+    const store = this.getStore(storeName, "readonly");
+    const request = store.getAll();
+    const results = await this.handleRequest<StoredValue<string, T>[]>(request);
+
+    const items: Record<string, T> = {};
+    results?.forEach((item) => {
+      const { id, data } = item;
+      items[id] = data;
+    });
+
+    return items;
+  }
+
+  async setAllItems<T>(storeName: LSS_INDEXED_DB_KEYS, items: Record<string, T>): Promise<void> {
+    if (!this.db) await this.init();
+
+    const store = this.getStore(storeName, "readwrite");
+
+    // Clear existing items
+    await this.handleRequest(store.clear());
+
+    // Add all new items
+    const promises = Object.entries(items).map(([id, item]) => {
+      const value: StoredValue<string, T> = {
+        id: id,
+        data: item,
       };
-      request.onerror = () => reject(request.error);
+      return this.handleRequest(store.put(value));
     });
+
+    await Promise.all(promises);
   }
 
-  async getAllItems<T>(storeName: string): Promise<Record<number, T>> {
+  async clearStore(storeName: LSS_INDEXED_DB_KEYS): Promise<void> {
     if (!this.db) await this.init();
 
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([storeName], "readonly");
-      const store = transaction.objectStore(storeName);
-
-      const request = store.getAll();
-      request.onsuccess = () => {
-        const items: Record<number, T> = {};
-        request.result.forEach((item: any) => {
-          const { id, ...data } = item;
-          items[id] = data as T;
-        });
-        resolve(items);
-      };
-      request.onerror = () => reject(request.error);
-    });
+    const store = this.getStore(storeName, "readwrite");
+    await this.handleRequest(store.clear());
   }
 
-  async setAllItems<T>(storeName: string, items: Record<number, T>): Promise<void> {
-    if (!this.db) await this.init();
-
-    return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
-
-      // Clear existing items
-      const clearRequest = store.clear();
-      clearRequest.onsuccess = () => {
-        // Add all new items
-        const promises: Promise<void>[] = [];
-        Object.entries(items).forEach(([id, item]) => {
-          promises.push(new Promise((itemResolve, itemReject) => {
-            const request = store.put({ id: parseInt(id), ...item });
-            request.onsuccess = () => itemResolve();
-            request.onerror = () => itemReject(request.error);
-          }));
-        });
-
-        Promise.all(promises)
-          .then(() => resolve())
-          .catch(reject);
-      };
-      clearRequest.onerror = () => reject(clearRequest.error);
-    });
+  private getStore(storeName: LSS_INDEXED_DB_KEYS, mode: IDBTransactionMode): IDBObjectStore {
+    if (!this.db) throw new Error("Database not initialized");
+    const transaction = this.db.transaction([storeName], mode);
+    return transaction.objectStore(storeName);
   }
 
-  async clearStore(storeName: string): Promise<void> {
-    if (!this.db) await this.init();
-
+  private async handleRequest<T>(request: IDBRequest<T>): Promise<T | undefined> {
     return new Promise((resolve, reject) => {
-      const transaction = this.db!.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
-
-      const request = store.clear();
-      request.onsuccess = () => resolve();
+      request.onsuccess = () => resolve(request.result);
       request.onerror = () => reject(request.error);
     });
   }

@@ -1,6 +1,6 @@
+import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 import { defineConfig } from "vite";
 import monkey from "vite-plugin-monkey";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +14,7 @@ export default defineConfig({
         license: "MIT",
         author: "Grisu118",
         description: "Zählt wie oft eine AAO angeglickt wurde und zeigt es mit einem badge direkt auf der AAO an",
+        updateURL: "https://github.com/Grisu118/lss-userscript/releases/latest/download/aao-counter.user.js",
       },
     }),
     nxViteTsPaths(),

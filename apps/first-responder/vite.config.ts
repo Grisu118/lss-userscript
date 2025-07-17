@@ -14,6 +14,7 @@ export default defineConfig({
         license: "MIT",
         author: "Grisu118",
         description: "First Responder",
+        updateURL: "https://github.com/Grisu118/lss-userscript/releases/latest/download/first-responder.user.js",
       },
     }),
     nxViteTsPaths(),

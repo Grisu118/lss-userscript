@@ -1,13 +1,17 @@
 import dayjs from "dayjs";
 
-export interface CachedEntry<T> extends Record<string, unknown> {
-  /** ISO8601 */
-  timestamp: string;
-  version: number;
+export interface CacheEntry<T> {
+  metadata: Metadata;
   data: T;
 }
 
-export const isUpToDate = (cachedEntry: CachedEntry<unknown>, currentVersion: number) => {
+export interface Metadata extends Record<string, unknown> {
+  /** ISO8601 */
+  timestamp: string;
+  version: number;
+}
+
+export const isUpToDate = (cachedEntry: Metadata, currentVersion: number) => {
   const now = dayjs();
   const then = dayjs(cachedEntry.timestamp);
 

@@ -1,4 +1,4 @@
-import { getMissions } from "@lss/storage";
+import { getMission } from "@lss/storage";
 import dayjs from "dayjs";
 import "./style.css";
 
@@ -25,14 +25,16 @@ async function missionInfoNodes() {
   if (variant) {
     missionId += `/${variant}`;
   }
+  if (!missionId) {
+    return undefined;
+  }
 
   console.log("MissionId", missionId);
 
-  const missions = await getMissions();
-  const mission = missions.data.find((mission) => mission.id == missionId);
+  const mission = await getMission(missionId);
 
   const creditsElem = document.createElement("span");
-  creditsElem.innerText = `Credits: ${mission?.average_credits}`;
+  creditsElem.innerText = `Credits: ${mission.data?.average_credits}`;
 
   return [creditsElem];
 }

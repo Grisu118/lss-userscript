@@ -14,6 +14,7 @@ export default defineConfig({
         license: "MIT",
         author: "Grisu118",
         description: "Zeigt details zum Einsatz an, u.a. Kategorie, Generierungszeitpunkt & erwartete Einnahmen",
+        updateURL: "https://github.com/Grisu118/lss-userscript/releases/latest/download/mission-info.user.js",
       },
     }),
     nxViteTsPaths(),

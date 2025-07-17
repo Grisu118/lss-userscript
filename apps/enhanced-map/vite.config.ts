@@ -1,6 +1,6 @@
+import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 import { defineConfig } from "vite";
 import monkey from "vite-plugin-monkey";
-import { nxViteTsPaths } from "@nx/vite/plugins/nx-tsconfig-paths.plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,6 +14,7 @@ export default defineConfig({
         license: "MIT",
         author: "Grisu118",
         description: "Zusätziche Funktionen für die Karte",
+        updateURL: "https://github.com/Grisu118/lss-userscript/releases/latest/download/enhanced-map.user.js",
       },
     }),
     nxViteTsPaths(),

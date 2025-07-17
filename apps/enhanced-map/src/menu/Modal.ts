@@ -139,11 +139,11 @@ export const updateModal = async () => {
 
   const buildingState = document.getElementById(BUILDING_STATE_ID);
   if (buildingState) {
-    buildingState.innerText = dayjs(buildings.timestamp).format("DD.MM.YYYY HH:mm:ss");
+    buildingState.innerText = dayjs(buildings.metadata.timestamp).format("DD.MM.YYYY HH:mm:ss");
   }
   const vehicleState = document.getElementById(VEHICLES_STATE_ID);
   if (vehicleState) {
-    vehicleState.innerText = dayjs(vehicles.timestamp).format("DD.MM.YYYY HH:mm:ss");
+    vehicleState.innerText = dayjs(vehicles.metadata.timestamp).format("DD.MM.YYYY HH:mm:ss");
   }
 
   const dispatchSelect = document.getElementById(SELECT_DISPATCH_CENTER_ID);

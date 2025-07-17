@@ -1,4 +1,4 @@
 export * from "./buildingCache";
 export * from "./missionCache";
 export * from "./vehicleCache";
-export type { CachedEntry } from "./CachedEntry";
+export type { Metadata, CacheEntry } from "./Metadata";
