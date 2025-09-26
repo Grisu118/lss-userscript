@@ -1,3 +1,4 @@
+import { editVehicle } from "../form/formUtils";
 import { Result } from "../Result";
 import { Vehicle } from "./dto";
 
@@ -10,4 +11,8 @@ export const fetchAllVehicles = async (): Promise<Record<string, Vehicle>> => {
     resultMap[vehicle.id] = vehicle;
   }
   return resultMap;
+};
+
+export const renameVehicle = async (id: number, newName: string): Promise<Response> => {
+  return editVehicle(id, { "vehicle[caption]": newName });
 };
