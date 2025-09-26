@@ -2,5 +2,36 @@
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
   "files": [],
-  "references": []
+  "references": [
+    {
+      "path": "./apps/mission-vehicle-filter"
+    },
+    {
+      "path": "./apps/enhanced-buildings"
+    },
+    {
+      "path": "./packages/lss-storage"
+    },
+    {
+      "path": "./apps/first-responder"
+    },
+    {
+      "path": "./apps/enhanced-map"
+    },
+    {
+      "path": "./apps/mission-info"
+    },
+    {
+      "path": "./packages/lss-api"
+    },
+    {
+      "path": "./apps/aao-counter"
+    },
+    {
+      "path": "./apps/enhanced-s5"
+    },
+    {
+      "path": "./apps/aao-marker"
+    }
+  ]
 }

@@ -3,5 +3,10 @@
   "compilerOptions": {
     "outDir": "./out-tsc"
   },
-  "include": ["src/**/*.ts", "../../typings/**/*", "../../packages/**/*.ts"]
+  "include": ["src/**/*.ts", "../../typings/**/*", "../../packages/**/*.ts"],
+  "references": [
+    {
+      "path": "../lss-api"
+    }
+  ]
 }
