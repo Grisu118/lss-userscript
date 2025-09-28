@@ -47,5 +47,26 @@ export const relaFireDepartment: Schema = {
         VehicleType.KLF,
       ],
     },
+    {
+      numberRange: {
+        start: 20,
+        end: 20,
+      },
+      vehicleTypes: [VehicleType.TLF_16_24TR],
+    },
+    {
+      numberRange: {
+        start: 33,
+        end: 34,
+      },
+      vehicleTypes: [VehicleType.DLK23],
+    },
+    {
+      numberRange: {
+        start: 90,
+        end: 90,
+      },
+      vehicleTypes: [VehicleType.GWM],
+    },
   ],
 };

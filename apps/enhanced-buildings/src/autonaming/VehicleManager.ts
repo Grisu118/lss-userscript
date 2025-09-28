@@ -1,4 +1,4 @@
-import { Building, VehicleType } from "@lss/api";
+import { Building, renameVehicle, VehicleType } from "@lss/api";
 import { Schema } from "./schemas/Schema";
 import { SchemaRegistry } from "./schemas/SchemaRegistry";
 
@@ -15,6 +15,7 @@ interface ParsedBuildingName {
 }
 
 export class VehicleManager {
+  private static readonly RENAME_BTN_ID = "ehb-rename-btn";
   private readonly vehicles: VehicleEntry[];
   private readonly schema: Schema;
   private readonly buildingName: ParsedBuildingName;
@@ -67,6 +68,42 @@ export class VehicleManager {
         cell.appendChild(emojiSpan);
       }
     });
+
+    // add btn to trigger rename
+    if (this.vehicles.some((it) => it.newName && it.currentName !== it.newName)) {
+      const container = document.querySelector<HTMLDivElement>(".form-actions");
+
+      const btn = document.createElement("btn");
+      btn.id = VehicleManager.RENAME_BTN_ID;
+      btn.className = "btn btn-default";
+      btn.textContent = "Rename Vehicles";
+      btn.addEventListener("click", () => this.triggerRename());
+
+      // remove existing btn
+      container?.querySelector(`#${VehicleManager.RENAME_BTN_ID}`)?.remove();
+
+      container?.append(btn);
+    }
+  };
+
+  private triggerRename = async () => {
+    console.log("renaming...");
+    const button = document.querySelector<HTMLButtonElement>(`#${VehicleManager.RENAME_BTN_ID}`);
+    if (!button) throw new Error("Cannot find button");
+
+    button.classList.add("loading", "disabled");
+    button.disabled = true;
+    button.textContent = `Rename Vehicles 0 / ${this.vehicles.length}`;
+
+    let index = 1;
+    for (const vehicle of this.vehicles) {
+      if (vehicle.newName && vehicle.currentName !== vehicle.newName) {
+        await renameVehicle(vehicle.id, vehicle.newName);
+        button.textContent = `Rename Vehicles ${index} / ${this.vehicles.length}`;
+      }
+      index++;
+    }
+    location.reload();
   };
 
   private calculateNamesOfVehicles = () => {
