@@ -56,6 +56,13 @@ export const relaFireDepartment: Schema = {
     },
     {
       numberRange: {
+        start: 31,
+        end: 31,
+      },
+      vehicleTypes: [VehicleType.GWA, { originalType: VehicleType.GW_L1, customType: "ASF" }],
+    },
+    {
+      numberRange: {
         start: 33,
         end: 34,
       },

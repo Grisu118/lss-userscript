@@ -5,7 +5,7 @@ import { VehicleManager } from "./VehicleManager";
 
 registerSchemas();
 
-export const autonaming = (currentBuilding: Building): void => {
+export const autonaming = async (currentBuilding: Building): Promise<void> => {
   console.log("Load Autonaming for building", currentBuilding);
   // lookup if we have a naming scheme for this building
   const schema = SchemaRegistry.INSTANCE.getForBuilding(currentBuilding);
@@ -16,5 +16,5 @@ export const autonaming = (currentBuilding: Building): void => {
 
   // setup vehicle manager
   const vehicleManager = new VehicleManager(schema, currentBuilding);
-  vehicleManager.displayNamingStatus();
+  await vehicleManager.displayNamingStatus();
 };

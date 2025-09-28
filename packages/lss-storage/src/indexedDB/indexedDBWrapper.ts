@@ -103,6 +103,16 @@ class IndexedDBWrapper {
     return null;
   }
 
+  async hasItem(storeName: LSS_INDEXED_DB_KEYS, id: string): Promise<boolean> {
+    if (!this.db) await this.init();
+
+    const store = this.getStore(storeName, "readonly");
+    const request = store.count(id);
+    const count = await this.handleRequest<number>(request);
+
+    return count !== undefined && count > 0;
+  }
+
   async getAllItems<T>(storeName: LSS_INDEXED_DB_KEYS): Promise<Record<string, T>> {
     if (!this.db) await this.init();
 
