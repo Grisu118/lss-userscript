@@ -69,6 +69,9 @@ export class SchemaRegistry {
     for (const n of namings) {
       const types = Array.isArray(n.vehicleTypes) ? n.vehicleTypes : [n.vehicleTypes];
       for (const t of types) {
+        if (typeof t === "object") {
+          continue;
+        }
         if (seen.has(t)) {
           throw new Error(`VehicleType ${t} is assigned in multiple vehicleNamings`);
         }
