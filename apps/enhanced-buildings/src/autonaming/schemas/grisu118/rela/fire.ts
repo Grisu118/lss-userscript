@@ -11,21 +11,21 @@ export const relaFireDepartment: Schema = {
         start: 1,
         end: 2,
       },
-      vehicleTypes: [VehicleType.ELW1, VehicleType.ELW1_DRONE],
+      vehicleTypes: [VehicleType.FD_ELW1, VehicleType.FD_ELW1_DRONE],
     },
     {
       numberRange: {
         start: 3,
         end: 3,
       },
-      vehicleTypes: [VehicleType.ELW2, VehicleType.ELW2_DRONE],
+      vehicleTypes: [VehicleType.FD_ELW2, VehicleType.FD_ELW2_DRONE],
     },
     {
       numberRange: {
         start: 8,
         end: 9,
       },
-      vehicleTypes: [VehicleType.MTW, VehicleType.MTF_DRONE],
+      vehicleTypes: [VehicleType.FD_MTW, VehicleType.FD_MTF_DRONE],
     },
     {
       numberRange: {
@@ -33,18 +33,18 @@ export const relaFireDepartment: Schema = {
         end: 19,
       },
       vehicleTypes: [
-        VehicleType.HLF_20,
-        VehicleType.HLF_10,
-        VehicleType.HLF_TRAIN,
-        VehicleType.LF20,
-        VehicleType.LF10,
-        VehicleType.TLF_4000,
-        VehicleType.TLF_3000,
-        VehicleType.TLF_2000,
-        VehicleType.TLF_16_25,
-        VehicleType.MLF,
-        VehicleType.LF8_6,
-        VehicleType.KLF,
+        VehicleType.FD_HLF_20,
+        VehicleType.FD_HLF_10,
+        VehicleType.FD_HLF_TRAIN,
+        VehicleType.FD_LF20,
+        VehicleType.FD_LF10,
+        VehicleType.FD_TLF_4000,
+        VehicleType.FD_TLF_3000,
+        VehicleType.FD_TLF_2000,
+        VehicleType.FD_TLF_16_25,
+        VehicleType.FD_MLF,
+        VehicleType.FD_LF8_6,
+        VehicleType.FD_KLF,
       ],
     },
     {
@@ -52,28 +52,28 @@ export const relaFireDepartment: Schema = {
         start: 20,
         end: 20,
       },
-      vehicleTypes: [VehicleType.TLF_16_24TR],
+      vehicleTypes: [VehicleType.FD_TLF_16_24TR, VehicleType.FD_SLF, VehicleType.FD_PTLF_4000],
     },
     {
       numberRange: {
         start: 31,
         end: 31,
       },
-      vehicleTypes: [VehicleType.GWA, { originalType: VehicleType.GW_L1, customType: "ASF" }],
+      vehicleTypes: [VehicleType.FD_GWA, { originalType: VehicleType.FD_GW_L1, customType: "ASF" }],
     },
     {
       numberRange: {
         start: 33,
         end: 34,
       },
-      vehicleTypes: [VehicleType.DLK23],
+      vehicleTypes: [VehicleType.FD_DLK23],
     },
     {
       numberRange: {
         start: 90,
         end: 90,
       },
-      vehicleTypes: [VehicleType.GWM],
+      vehicleTypes: [VehicleType.FD_GWM],
     },
   ],
 };
