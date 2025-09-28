@@ -1,5 +1,6 @@
 import { Building, renameVehicle, VehicleType } from "@lss/api";
-import { Schema } from "./schemas/Schema";
+import { getVehicle } from "@lss/storage";
+import { CustomVehicleType, ExtendedVehicleType, Schema } from "./schemas/Schema";
 import { SchemaRegistry } from "./schemas/SchemaRegistry";
 
 export interface VehicleEntry {
@@ -7,6 +8,7 @@ export interface VehicleEntry {
   vehicleType: VehicleType;
   currentName: string;
   newName?: string;
+  vehicleTypeCaption?: string;
 }
 
 interface ParsedBuildingName {
@@ -27,8 +29,8 @@ export class VehicleManager {
     console.debug("Found the following vehicles", this.vehicles);
   }
 
-  public displayNamingStatus = () => {
-    this.calculateNamesOfVehicles();
+  public displayNamingStatus = async () => {
+    await this.calculateNamesOfVehicles();
 
     // show status of naming in vehicle table
     this.vehicles.forEach((vehicle, index) => {
@@ -106,7 +108,12 @@ export class VehicleManager {
     location.reload();
   };
 
-  private calculateNamesOfVehicles = () => {
+  private calculateNamesOfVehicles = async () => {
+    // Load vehicle cache if we have custom vehicle types
+    if (this.schema.vehicleNamings.some((naming) => this.hasCustomVehicleTypes(naming.vehicleTypes))) {
+      await this.loadVehicleCache();
+    }
+
     // Clear any existing new names
     this.vehicles.forEach((vehicle) => {
       vehicle.newName = undefined;
@@ -121,13 +128,13 @@ export class VehicleManager {
 
       // Filter vehicles that match this naming's vehicle types and don't already have a new name
       const matchingVehicles = this.vehicles.filter(
-        (vehicle) => vehicleTypes.includes(vehicle.vehicleType) && !vehicle.newName,
+        (vehicle) => this.vehicleMatchesTypes(vehicle, vehicleTypes) && !vehicle.newName,
       );
 
       // Sort vehicles: first by type order in the schema, then by id
       const sortedVehicles = matchingVehicles.sort((a, b) => {
-        const typeIndexA = vehicleTypes.indexOf(a.vehicleType);
-        const typeIndexB = vehicleTypes.indexOf(b.vehicleType);
+        const typeIndexA = this.getVehicleTypeIndex(a, vehicleTypes);
+        const typeIndexB = this.getVehicleTypeIndex(b, vehicleTypes);
 
         if (typeIndexA !== typeIndexB) {
           return typeIndexA - typeIndexB;
@@ -145,12 +152,78 @@ export class VehicleManager {
 
       vehiclesToName.forEach((vehicle, index) => {
         const vehicleNumber = start + index;
-        vehicle.newName = this.generateVehicleName(vehicle, vehicleNumber);
+        const matchedType = this.getMatchedVehicleType(vehicle, vehicleTypes);
+        vehicle.newName = this.generateVehicleName(vehicle, vehicleNumber, matchedType);
       });
     }
   };
 
-  private generateVehicleName = (vehicle: VehicleEntry, vehicleNumber: number): string => {
+  private async loadVehicleCache(): Promise<void> {
+    try {
+      // Update vehicle entries with vehicle_type_caption
+      for (const vehicle of this.vehicles) {
+        const cachedVehicleEntry = await getVehicle(vehicle.id);
+        const cachedVehicle = cachedVehicleEntry.data;
+        if (cachedVehicle?.vehicle_type_caption) {
+          vehicle.vehicleTypeCaption = cachedVehicle.vehicle_type_caption;
+        }
+      }
+    } catch (error) {
+      console.warn("Failed to load vehicle cache:", error);
+    }
+  }
+
+  private hasCustomVehicleTypes(vehicleTypes: ExtendedVehicleType | ExtendedVehicleType[]): boolean {
+    const types = Array.isArray(vehicleTypes) ? vehicleTypes : [vehicleTypes];
+    return types.some((type) => typeof type === "object" && "originalType" in type);
+  }
+
+  private vehicleMatchesTypes(vehicle: VehicleEntry, vehicleTypes: ExtendedVehicleType[]): boolean {
+    return vehicleTypes.some((type) => {
+      if (typeof type === "number") {
+        // Regular VehicleType
+        return vehicle.vehicleType === type;
+      } else if (typeof type === "object" && "originalType" in type) {
+        // CustomVehicleType
+        const customType = type as CustomVehicleType;
+        return vehicle.vehicleType === customType.originalType && vehicle.vehicleTypeCaption === customType.customType;
+      }
+      return false;
+    });
+  }
+
+  private getVehicleTypeIndex(vehicle: VehicleEntry, vehicleTypes: ExtendedVehicleType[]): number {
+    return vehicleTypes.findIndex((type) => {
+      if (typeof type === "number") {
+        return vehicle.vehicleType === type;
+      } else if (typeof type === "object" && "originalType" in type) {
+        const customType = type as CustomVehicleType;
+        return vehicle.vehicleType === customType.originalType && vehicle.vehicleTypeCaption === customType.customType;
+      }
+      return false;
+    });
+  }
+
+  private getMatchedVehicleType(
+    vehicle: VehicleEntry,
+    vehicleTypes: ExtendedVehicleType[],
+  ): ExtendedVehicleType | undefined {
+    return vehicleTypes.find((type) => {
+      if (typeof type === "number") {
+        return vehicle.vehicleType === type;
+      } else if (typeof type === "object" && "originalType" in type) {
+        const customType = type as CustomVehicleType;
+        return vehicle.vehicleType === customType.originalType && vehicle.vehicleTypeCaption === customType.customType;
+      }
+      return false;
+    });
+  }
+
+  private generateVehicleName = (
+    vehicle: VehicleEntry,
+    vehicleNumber: number,
+    matchedType?: ExtendedVehicleType,
+  ): string => {
     let template = this.schema.nameTemplate;
 
     // Replace organization placeholders
@@ -167,12 +240,21 @@ export class VehicleManager {
     // Replace vehicle number
     template = template.replace(/{V_NB}/g, vehicleNumber.toString());
 
-    // Replace vehicle type - use mapping if available, otherwise use enum name
-    const vehicleTypeMapping =
-      this.schema.vehicleTypeMappings?.[vehicle.vehicleType] ??
-      SchemaRegistry.INSTANCE.getGlobalVehicleTypeMapping()[vehicle.vehicleType] ??
-      VehicleType[vehicle.vehicleType] ??
-      vehicle.vehicleType.toString();
+    // Replace vehicle type - handle CustomVehicleType
+    let vehicleTypeMapping: string;
+
+    if (matchedType && typeof matchedType === "object" && "customType" in matchedType) {
+      // For CustomVehicleType, use the customType for templating
+      vehicleTypeMapping = matchedType.customType;
+    } else {
+      // For regular VehicleType, use existing logic
+      vehicleTypeMapping =
+        this.schema.vehicleTypeMappings?.[vehicle.vehicleType] ??
+        SchemaRegistry.INSTANCE.getGlobalVehicleTypeMapping()[vehicle.vehicleType] ??
+        VehicleType[vehicle.vehicleType] ??
+        vehicle.vehicleType.toString();
+    }
+
     template = template.replace(/{V_TYPE}/g, vehicleTypeMapping);
 
     return template;

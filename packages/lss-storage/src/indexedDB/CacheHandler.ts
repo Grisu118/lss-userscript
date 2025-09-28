@@ -17,7 +17,7 @@ export class CacheHandler<T> {
 
   public async get(key: string, force: boolean = false): Promise<CacheEntry<T | null>> {
     let metadata = await this.getMetadataAndCheckUpToDate(force);
-    if (!metadata) {
+    if (!metadata || !(await this.db.hasItem(this.storeKey, key))) {
       metadata = await this.updateCache();
     }
 

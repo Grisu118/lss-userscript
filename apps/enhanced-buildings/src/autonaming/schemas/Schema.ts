@@ -17,6 +17,13 @@ export interface Range {
   end: number;
 }
 
+export interface CustomVehicleType {
+  originalType: VehicleType;
+  customType: string;
+}
+
+export type ExtendedVehicleType = VehicleType | CustomVehicleType;
+
 export interface VehicleNamingSchema {
   /**
    * where the numbering should begin and end (both inclusive)
@@ -28,7 +35,7 @@ export interface VehicleNamingSchema {
    * the vehicle types to include in this numbering.
    * If an array, the first vehicle type in the array will get the first numbers
    */
-  vehicleTypes: VehicleType[] | VehicleType;
+  vehicleTypes: ExtendedVehicleType[] | ExtendedVehicleType;
 }
 
 export interface Schema {

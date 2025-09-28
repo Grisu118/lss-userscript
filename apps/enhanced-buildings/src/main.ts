@@ -31,5 +31,5 @@ const loadBuildings = async (
   // render x / y buildings in upper right corner
   renderBuildingsCounter(buildings, currentBuilding);
 
-  autonaming(currentBuilding);
+  await autonaming(currentBuilding);
 })();
