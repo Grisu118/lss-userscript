@@ -2,15 +2,21 @@ import "./style.css";
 import { Building } from "@lss/api";
 
 import { CachedBuildings, getBuildings } from "@lss/storage";
+import { autonaming } from "./autonaming/autonaming";
+import { renderBuildingsCounter } from "./counter/counter";
 
-const loadBuildings = async (buildingId: number, retry?: boolean): Promise<[CachedBuildings, Building]> => {
+const loadBuildings = async (
+  buildingId: number,
+  buildingName?: string,
+  retry?: boolean,
+): Promise<[CachedBuildings, Building]> => {
   const buildings = await getBuildings(retry);
   const currentBuilding = buildings.data[buildingId];
-  if (!currentBuilding) {
+  if (!currentBuilding || (buildingName && currentBuilding.caption !== buildingName)) {
     if (retry) {
       throw new Error("Could not load building");
     }
-    return loadBuildings(buildingId, true);
+    return loadBuildings(buildingId, undefined, true);
   } else {
     return [buildings, currentBuilding];
   }
@@ -18,24 +24,12 @@ const loadBuildings = async (buildingId: number, retry?: boolean): Promise<[Cach
 
 (async () => {
   const buildingId = +location.pathname.split("/")[2];
+  const buildingName = document.querySelector(".building-title > h1")?.textContent?.trim();
 
-  const [buildings, currentBuilding] = await loadBuildings(buildingId);
+  const [buildings, currentBuilding] = await loadBuildings(buildingId, buildingName);
 
-  const relevantBuildings = Object.values(buildings.data)
-    .filter((building) => building.building_type == currentBuilding.building_type)
-    .sort((a, b) => a.id - b.id);
+  // render x / y buildings in upper right corner
+  renderBuildingsCounter(buildings, currentBuilding);
 
-  console.log(`There are ${relevantBuildings.length} buildings of type ${currentBuilding.building_type}`);
-
-  const index = relevantBuildings.findIndex((building) => building.id == buildingId);
-  console.log(`Current building is ${index + 1} of ${relevantBuildings.length}`);
-
-  const breadcrumb = document.querySelector<HTMLOListElement>(".breadcrumb");
-
-  if (breadcrumb) {
-    const elem = document.createElement("span");
-    elem.innerText = `${index + 1} / ${relevantBuildings.length}`;
-    elem.classList.add("building-counter");
-    breadcrumb.append(elem);
-  }
+  autonaming(currentBuilding);
 })();
