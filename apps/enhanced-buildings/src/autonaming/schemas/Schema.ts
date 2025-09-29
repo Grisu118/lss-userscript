@@ -17,6 +17,13 @@ export interface Range {
   end: number;
 }
 
+export const r = (first: number, end?: number): Range => {
+  return {
+    start: first,
+    end: end ?? first,
+  };
+};
+
 export interface CustomVehicleType {
   originalType: VehicleType;
   customType: string;

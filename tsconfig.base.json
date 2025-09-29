@@ -13,7 +13,11 @@
     "importHelpers": true,
     "incremental": true,
     "isolatedModules": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [
+      "ESNext",
+      "DOM",
+      "DOM.Iterable"
+    ],
     "module": "ESNext",
     "moduleResolution": "Node",
     "noEmitOnError": true,
@@ -33,9 +37,16 @@
     "baseUrl": ".",
     "rootDir": ".",
     "paths": {
-      "@lss/api": ["packages/lss-api/src/index.ts"],
-      "@lss/storage": ["packages/lss-storage/src/index.ts"]
+      "@lss/api": [
+        "packages/lss-api/src/index.ts"
+      ],
+      "@lss/storage": [
+        "packages/lss-storage/src/index.ts"
+      ]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": [
+    "node_modules",
+    "tmp"
+  ]
 }
