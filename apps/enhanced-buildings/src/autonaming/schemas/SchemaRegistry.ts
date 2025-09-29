@@ -1,4 +1,4 @@
-import type { Building, BuildingType, VehicleType } from "@lss/api";
+import type { Building, BuildingType } from "@lss/api";
 import type { Schema, VehicleNamingSchema, VehicleTypeMapping } from "./Schema";
 
 export class SchemaRegistry {
@@ -64,20 +64,20 @@ export class SchemaRegistry {
       }
     }
 
-    // Validate vehicle types don't overlap
-    const seen = new Set<VehicleType>();
-    for (const n of namings) {
-      const types = Array.isArray(n.vehicleTypes) ? n.vehicleTypes : [n.vehicleTypes];
-      for (const t of types) {
-        if (typeof t === "object") {
-          continue;
-        }
-        if (seen.has(t)) {
-          throw new Error(`VehicleType ${t} is assigned in multiple vehicleNamings`);
-        }
-        seen.add(t as VehicleType);
-      }
-    }
+    // // Validate vehicle types don't overlap
+    // const seen = new Set<VehicleType>();
+    // for (const n of namings) {
+    //   const types = Array.isArray(n.vehicleTypes) ? n.vehicleTypes : [n.vehicleTypes];
+    //   for (const t of types) {
+    //     if (typeof t === "object") {
+    //       continue;
+    //     }
+    //     if (seen.has(t)) {
+    //       throw new Error(`VehicleType ${t} is assigned in multiple vehicleNamings`);
+    //     }
+    //     seen.add(t as VehicleType);
+    //   }
+    // }
   }
 
   private static rangesOverlap(aStart: number, aEnd: number, bStart: number, bEnd: number): boolean {
