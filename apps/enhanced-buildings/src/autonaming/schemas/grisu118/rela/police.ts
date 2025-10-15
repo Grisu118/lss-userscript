@@ -11,20 +11,20 @@ export const relaPoliceStation: Schema = {
       vehicleTypes: [VehicleType.PD_FUSTW_DGL],
     },
     {
-      numberRange: r(401, 417),
+      numberRange: r(410, 424),
       vehicleTypes: [VehicleType.PD_FUSTW],
     },
     {
-      numberRange: r(418, 419),
+      numberRange: r(425, 427),
+      vehicleTypes: [VehicleType.PD_ZSTW],
+    },
+    {
+      numberRange: r(428, 429),
       vehicleTypes: [VehicleType.PD_BIKE],
     },
     {
-      numberRange: r(420),
+      numberRange: r(430),
       vehicleTypes: [VehicleType.PD_DHuFKW],
-    },
-    {
-      numberRange: r(426, 429),
-      vehicleTypes: [VehicleType.PD_ZSTW],
     },
     {
       numberRange: r(435),
@@ -39,47 +39,47 @@ export const relaFederalPoliceStation: Schema = {
   nameTemplate: relaPoliceStation.nameTemplate,
   vehicleNamings: [
     {
-      numberRange: r(421, 423),
-      vehicleTypes: [VehicleType.PD_DHuFKW],
-    },
-    {
-      numberRange: r(500, 509),
+      numberRange: r(401, 405),
       vehicleTypes: [VehicleType.PD_FUEKW],
     },
     {
-      numberRange: r(510, 519),
+      numberRange: r(406, 409),
       vehicleTypes: [VehicleType.PD_LEBEFKW],
     },
     {
-      numberRange: r(520, 528),
-      vehicleTypes: [VehicleType.PD_GRUKW],
+      numberRange: r(431, 433),
+      vehicleTypes: [VehicleType.PD_DHuFKW],
     },
     {
-      numberRange: r(530, 532),
-      vehicleTypes: [VehicleType.PD_WAWE10],
-    },
-    {
-      numberRange: r(535),
+      numberRange: r(436),
       vehicleTypes: [VehicleType.PD_GEFKW],
     },
     {
-      numberRange: r(538),
+      numberRange: r(438),
       vehicleTypes: [VehicleType.PD_LAUKW],
     },
     {
-      numberRange: r(540, 545),
+      numberRange: r(440, 442),
+      vehicleTypes: [VehicleType.PD_WAWE10],
+    },
+    {
+      numberRange: r(450, 458),
+      vehicleTypes: [VehicleType.PD_GRUKW],
+    },
+    {
+      numberRange: r(460, 465),
       vehicleTypes: [VehicleType.PD_SEK_ZF],
     },
     {
-      numberRange: r(548, 549),
+      numberRange: r(468, 469),
       vehicleTypes: [VehicleType.PD_SEK_MTF],
     },
     {
-      numberRange: r(550, 555),
+      numberRange: r(470, 475),
       vehicleTypes: [VehicleType.PD_MEK_ZF],
     },
     {
-      numberRange: r(558, 559),
+      numberRange: r(478, 479),
       vehicleTypes: [VehicleType.PD_MEK_MTF],
     },
   ],
