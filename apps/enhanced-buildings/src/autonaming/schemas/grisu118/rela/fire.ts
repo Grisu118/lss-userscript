@@ -42,11 +42,12 @@ export const relaFireDepartment: Schema = {
         VehicleType.FD_HLF_TRAIN,
         VehicleType.FD_LF20,
         VehicleType.FD_LF_20_16,
-        VehicleType.FD_TLF_4000,
         VehicleType.FD_TLF_20_40,
         VehicleType.FD_TLF_3000,
+        VehicleType.FD_TLF_16_45,
         VehicleType.FD_TLF_2000,
         VehicleType.FD_TLF_16_25,
+        VehicleType.FD_TLF_4000,
         VehicleType.FD_LF10,
         VehicleType.FD_MLF,
         VehicleType.FD_LF8_6,
@@ -231,4 +232,8 @@ export const relaFireDepartment: Schema = {
       vehicleTypes: [VehicleType.FD_AB_FAN],
     },
   ],
+  vehicleTypeMappings: {
+    [VehicleType.FD_TLF_4000]: "TLF-I",
+    [VehicleType.FD_TLF_3000]: "TLF-W",
+  },
 };
