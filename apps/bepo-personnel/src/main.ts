@@ -572,34 +572,61 @@ async function updateButtonVisibility(buildingId: string): Promise<void> {
   const panelBody = getPanelBody(buildingId);
   if (!panelBody) return;
 
-  // Check which schooling types are available
-  const availableSchoolings = new Set<string | null>();
+  // Check which schooling types are available and count available personnel
+  const availableSchoolings = new Map<string | null, number>();
 
-  // Check for personnel without schooling
+  // Count personnel without schooling (only unassigned)
   const schoolingCells = panelBody.querySelectorAll<HTMLTableCellElement>("td[id^='school_personal_education_']");
+  let countWithoutSchooling = 0;
   for (let j = 0; j < schoolingCells.length; j++) {
     const schoolingCell = schoolingCells[j];
     if (schoolingCell.innerHTML.replace(/\s/g, "").length === 0) {
-      availableSchoolings.add(null);
-      break;
+      const row = schoolingCell.parentElement;
+      // Check if personnel is not currently assigned (column 3)
+      if (row && row.children[3]?.innerHTML.replace(/\s/g, "").length === 0) {
+        countWithoutSchooling++;
+      }
     }
   }
+  if (countWithoutSchooling > 0) {
+    availableSchoolings.set(null, countWithoutSchooling);
+  }
 
-  // Check for personnel with specific schoolings
+  // Count personnel with specific schoolings (only unassigned)
   personnelSettingsProxy.forEach((setting) => {
     if (setting.key !== null) {
       const elements = panelBody.querySelectorAll<HTMLInputElement>(`input[${setting.key}='true']`);
-      if (elements.length > 0) {
-        availableSchoolings.add(setting.key);
+      let count = 0;
+      elements.forEach((element) => {
+        const row = element.parentElement?.parentElement;
+        // Check if personnel is not currently assigned (column 3)
+        if (row && row.children[3]?.innerHTML.replace(/\s/g, "").length === 0) {
+          count++;
+        }
+      });
+      if (count > 0) {
+        availableSchoolings.set(setting.key, count);
       }
     }
   });
 
-  // Show/hide buttons based on availability
+  // Show/hide buttons based on availability and apply warning color
   personnelSettingsProxy.forEach((setting) => {
     const button = document.getElementById(`personnel-select-button-${buildingId}-${setting.key}`);
     if (button) {
-      button.style.display = availableSchoolings.has(setting.key) ? "" : "none";
+      const availableCount = availableSchoolings.get(setting.key) || 0;
+      const hasPersonnel = availableCount > 0;
+      const isIncomplete = availableCount < setting.numberOfRequiredPersonnel;
+
+      button.style.display = hasPersonnel ? "" : "none";
+
+      if (hasPersonnel && isIncomplete) {
+        button.classList.add("btn-warning");
+        button.classList.remove("btn-default");
+      } else {
+        button.classList.remove("btn-warning");
+        button.classList.add("btn-default");
+      }
     }
   });
 }
