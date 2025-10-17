@@ -1,5 +1,7 @@
 # BePo Personalbeschaffer
 
+![GitHub Downloads (specific asset, latest release)](https://img.shields.io/github/downloads/Grisu118/lss-userscript/latest/bepo-personnel.user.js)
+
 Wirbt benötigtes Personal für eine BePo-Wache an.
 
 ## Features

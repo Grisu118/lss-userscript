@@ -15,6 +15,8 @@
     * https://github.com/Grisu118/lss-userscript/releases/latest/download/mission-vehicle-filter.user.js
 * Enhanced S5
     * https://github.com/Grisu118/lss-userscript/releases/latest/download/enhanced-s5.user.js
+* [BePo Personalbeschaffer](apps/bepo-personnel/README.md)
+  * https://github.com/Grisu118/lss-userscript/releases/latest/download/bepo-personnel.user.js
 
 
 ### Haftungsausschluss
