@@ -26,7 +26,7 @@ jobs:
       # Cache node_modules
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: 'npm'
 
       - run: npm ci
@@ -34,8 +34,15 @@ jobs:
 
       # Prepend any command with "nx-cloud record --" to record its logs to Nx Cloud
       # - run: npx nx-cloud record -- echo Hello World
-      # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
-      - run: npx nx affected -t lint build
+
+      # Run all projects on main branch, affected only on PRs/branches
+      - name: Run lint and build
+        run: |
+          if [ "${{ github.ref }}" == "refs/heads/main" ]; then
+            npx nx run-many -t lint build
+          else
+            npx nx affected -t lint build
+          fi
 
       # Save the build outputs for later jobs
       # This saves the entire repo, which includes the built files in "apps" folders
@@ -74,4 +81,3 @@ jobs:
           body: |
             An update for the different scripts.
           files: ./dist/**
-
