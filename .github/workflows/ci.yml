@@ -6,7 +6,7 @@ env:
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
 
 jobs:
@@ -73,6 +73,5 @@ jobs:
           prerelease: false
           body: |
             An update for the different scripts.
-            Used to update the scripts on https://greasyfork.org
           files: ./dist/**
 
