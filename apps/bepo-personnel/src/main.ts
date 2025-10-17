@@ -168,12 +168,38 @@ function initPanelBodies(): void {
   }
 }
 
-function removePanelHeadingClickEvent(): void {
+function setupIntersectionObserver(): void {
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const panelHeading = entry.target as HTMLElement;
+          const buildingId = panelHeading.getAttribute("building_id");
+          if (buildingId) {
+            // Load data when panel heading comes into view
+            panelHeadingClick(buildingId, false);
+            // Stop observing this panel after loading
+            observer.unobserve(panelHeading);
+          }
+        }
+      });
+    },
+    {
+      rootMargin: "50px", // Start loading slightly before panel enters viewport
+      threshold: 0.1,
+    }
+  );
+
   const elements = document.getElementsByClassName("personal-select-heading");
   for (let i = 0; i < elements.length; i++) {
-    const clone = elements[i].cloneNode(true) as HTMLElement;
-    elements[i].replaceWith(clone);
+    const element = elements[i] as HTMLElement;
+    // Remove existing click handlers by cloning
+    const clone = element.cloneNode(true) as HTMLElement;
+    element.replaceWith(clone);
+    // Add click handler for manual toggle
     clone.addEventListener("click", panelHeadingClickEvent);
+    // Observe for intersection
+    observer.observe(clone);
   }
 }
 
@@ -325,7 +351,7 @@ function createTotalSummaryElement(setting: PersonnelSetting): HTMLElement {
 
   const spanSelected = document.createElement("span");
   spanSelected.setAttribute("id", "number-of-selected-personnel-" + setting.key);
-  spanSelected.innerHTML = "0";
+  spanSelected.innerHTML = setting.numberOfSelectedPersonnel.toString();
 
   const spanRequired = document.createElement("span");
   spanRequired.setAttribute("id", "number-of-required-personnel-" + setting.key);
@@ -333,7 +359,10 @@ function createTotalSummaryElement(setting: PersonnelSetting): HTMLElement {
 
   const spanPersonnel = document.createElement("span");
   spanPersonnel.setAttribute("id", "personnel-" + setting.key);
-  spanPersonnel.classList.add("label", "label-warning");
+  spanPersonnel.classList.add(
+    "label",
+    setting.numberOfSelectedPersonnel === setting.numberOfRequiredPersonnel ? "label-success" : "label-warning",
+  );
   spanPersonnel.appendChild(spanSelected);
   spanPersonnel.appendChild(document.createTextNode("/"));
   spanPersonnel.appendChild(spanRequired);
@@ -608,12 +637,13 @@ async function main(): Promise<void> {
   }
 
   initPanelBodies();
-  removePanelHeadingClickEvent();
+  setupIntersectionObserver();
   addPersonnelSelector();
-  addFooter();
 
   // Load current building personnel and prefill footer
   await loadCurrentBuildingPersonnel();
+
+  addFooter();
 }
 
 main();
