@@ -38,10 +38,10 @@ function extractDistant(cells: HTMLCollection): number {
 }
 
 function extractHospitalHasRequiredDepartments(cells: HTMLCollection): boolean {
-  const text = cells.item(cells.length - 2)?.textContent?.trim();
+  const text = cells.item(3)?.textContent?.trim();
   return text == "Ja";
 }
 
 function extractDispatchBtn(cells: HTMLCollection): HTMLAnchorElement | undefined {
-  return cells.item(cells.length - 1)?.querySelector<HTMLAnchorElement>("a") ?? undefined;
+  return cells.item(4)?.querySelector<HTMLAnchorElement>("a") ?? undefined;
 }
