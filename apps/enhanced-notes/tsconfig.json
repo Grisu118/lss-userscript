@@ -1,5 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
   "include": ["src/**/*.ts", "../../typings/**/*", "../../packages/**/*.ts"],
-  "references": []
+  "references": [
+    {
+      "path": "../../packages/lss-api"
+    }
+  ]
 }

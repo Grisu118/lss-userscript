@@ -46,7 +46,7 @@ export class NotesManager {
       }
       // update version
       this.notes.version = this.notes.version + 1;
-      formData.set(NotesManager.NOTES_FORM_KEY, JSON.stringify(this.notes));
+      formData.set(NotesManager.NOTES_FORM_KEY, JSON.stringify(this.notes, null, 2));
     });
   }
 
