@@ -113,6 +113,7 @@ export class MarkdownEditor {
   private async handleSave(): Promise<void> {
     const newText = this.textarea.value;
     this.saveButton.disabled = true;
+    this.saveButton.textContent = "Saving...";
     try {
       await this.onSave(newText);
       this.content = newText;
@@ -122,9 +123,10 @@ export class MarkdownEditor {
     } catch (e) {
       console.error("Failed to save notes", e);
       // basic feedback
+      alert("Failed to save. See console for details.");
+    } finally {
       this.saveButton.disabled = false;
       this.saveButton.textContent = "Save";
-      alert("Failed to save. See console for details.");
     }
   }
 

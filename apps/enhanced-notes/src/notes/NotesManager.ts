@@ -27,7 +27,23 @@ export class NotesManager {
     return this.notes.buildings[id];
   }
 
-  public async saveBuildingNote(id: number, notes: BuildingNote): Promise<void> {
+  public async saveBuildingLink(id: number, link: string): Promise<void> {
+    const buildingNotes: BuildingNote = {
+      ...this.notes.buildings[id],
+      link,
+    };
+    await this.saveBuildingNote(id, buildingNotes);
+  }
+
+  public async saveBuildingNotes(id: number, notes: string): Promise<void> {
+    const buildingNotes: BuildingNote = {
+      ...this.notes.buildings[id],
+      notes,
+    };
+    await this.saveBuildingNote(id, buildingNotes);
+  }
+
+  private async saveBuildingNote(id: number, notes: BuildingNote): Promise<void> {
     this.notes.buildings[id] = notes;
     await this.save();
   }
