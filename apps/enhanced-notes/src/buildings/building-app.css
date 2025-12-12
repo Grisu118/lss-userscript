@@ -1,0 +1,19 @@
+#enh-notes-link-content,
+#enh-notes-content {
+  display: flex;
+  align-items: center;
+}
+
+#ls42-link-editor-link,
+#ls42-inline-md-editor-content {
+  margin-left: 8px;
+}
+
+#ls42-link-editor-input,
+#ls42-inline-md-editor-textarea {
+  margin-left: 8px;
+}
+
+#ls42-inline-md-editor-textarea {
+  width: 100%;
+}
