@@ -1,10 +1,7 @@
 import { blockHospitals } from "./hospital";
 
 (() => {
-  if (
-    location.pathname.includes("/patient/") ||
-    location.pathname.includes("/gefangener/")
-  ) {
+  if (location.pathname.includes("/patient/") || location.pathname.includes("/gefangener/")) {
     const nextFMSBtn = document.getElementById("next-vehicle-fms-5");
     const backToMissionBtn = document.getElementById("btn_back_to_mission");
 
@@ -16,18 +13,17 @@ import { blockHospitals } from "./hospital";
       backToMissionBtn.click();
     } else {
       // close the popup
-      window.tellParent("lightboxClose();");
+      if (window.tellParent) {
+        window.tellParent("lightboxClose();");
+      } else {
+        (window.parent as any).lightboxClose();
+      }
     }
   } else {
-    const transportRequestElem = document.querySelector<HTMLDivElement>(
-      '[data-transport-request="true"]',
-    );
+    const transportRequestElem = document.querySelector<HTMLDivElement>('[data-transport-request="true"]');
     if (transportRequestElem) {
       // we have an open transport request
-      if (
-        transportRequestElem.getAttribute("data-transport-request-type") ===
-        "patient"
-      ) {
+      if (transportRequestElem.getAttribute("data-transport-request-type") === "patient") {
         blockHospitals(transportRequestElem);
       }
 

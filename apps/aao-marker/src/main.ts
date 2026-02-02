@@ -88,6 +88,16 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
     applyAAOStatus(aaoStatusBtn);
 
     parentElem?.prepend(aaoStatusBtn);
+
+    const vehicleListStep = document.getElementsByClassName("missing_vehicles_load").item(0);
+    if (vehicleListStep) {
+      const observer = new MutationObserver(() => {
+        if (aaoStatusBtn) {
+          applyAAOStatus(aaoStatusBtn);
+        }
+      });
+      observer.observe(vehicleListStep, { childList: true, subtree: true });
+    }
   }
 
   const resetAAO = () => {
@@ -118,7 +128,6 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
         break;
       case "n":
         if (aaoStatusBtn) {
-          setTimeout(() => applyAAOStatus(aaoStatusBtn), 2000);
           ev.stopPropagation();
         }
         break;
