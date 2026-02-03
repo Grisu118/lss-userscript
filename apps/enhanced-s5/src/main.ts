@@ -14,9 +14,10 @@ import { blockHospitals } from "./hospital";
     } else {
       // close the popup
       if (window.tellParent) {
+        // tell parent seems to be not always available
         window.tellParent("lightboxClose();");
       } else {
-        (window.parent as any).lightboxClose();
+        window.parent?.lightboxClose();
       }
     }
   } else {
