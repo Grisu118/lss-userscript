@@ -1,5 +1,5 @@
 import { BuildingType } from "@lss/api";
-import { getBuildings, getVehicles } from "@lss/storage";
+import { getBuildings, getEquipments, getVehicles } from "@lss/storage";
 import dayjs from "dayjs";
 import { Marker } from "leaflet";
 import { drawBuildingsOfDispatchCenter } from "../buildings/dispatchCenter";
@@ -14,7 +14,9 @@ const SELECT_DISPATCH_CENTER_ID = "LSS_LS42_EHM_MODAL_SELECT_DISPATCH_CENTER";
 const CHECKBOX_HIGHLIGHT_BUILDINGS_OF_DISPATCH_ID =
   "LSS_LS42_EHM_MODAL_CHECKBOX_HIGHLIGHT_BUILDINGS_OF_DISPATCH_CENTER";
 const VEHICLES_STATE_REFRESH_BTN_ID = "LSS_LS42_EHM_MODAL_VEHICLE_STATE_REFRESH_BTN";
+const EQUIPMENTS_STATE_REFRESH_BTN_ID = "LSS_LS42_EHM_MODAL_EQUIPMENT_STATE_REFRESH_BTN";
 const VEHICLES_STATE_ID = "LSS_LS42_EHM_MODAL_VEHICLE_STATE";
+const EQUIPMENTS_STATE_ID = "LSS_LS42_EHM_MODAL_EQUIPMENT_STATE";
 const SELECT_VEHICLE_GROUP = "LSS_LS42_EHM_MODAL_SELECT_VEHICLE_GROUP";
 const CHECKBOX_HIGHLIGHT_BUILDINGS_OF_VEHICLE_GROUP =
   "LSS_LS42_EHM_MODAL_CHECKBOX_HIGHLIGHT_BUILDINGS_OF_VEHICLE_GROUP";
@@ -88,11 +90,13 @@ const onHighlightBuildingsOfVehicleGroup = async () => {
   if (checkBox && checkBox.checked && select && VEHICLE_AND_EQUIPMENT_GROUPS[select.value] !== undefined) {
     const buildings = await getBuildings();
     const vehicles = await getVehicles();
+    const equipments = await getEquipments();
     vehicleGroupMarkers.forEach((m) => m.remove());
     vehicleGroupMarkers = drawVehicleLocations(
       VEHICLE_AND_EQUIPMENT_GROUPS[select.value],
       buildings.data,
       vehicles.data,
+      equipments.data,
     );
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     vehicleGroupMarkers.forEach((m) => m.addTo(map!));
@@ -118,6 +122,14 @@ const init = (): void => {
       await updateModal();
     });
   }
+  const refreshEquipments = document.getElementById(EQUIPMENTS_STATE_REFRESH_BTN_ID);
+  if (refreshEquipments) {
+    refreshEquipments.addEventListener("click", async (ev) => {
+      ev.stopPropagation();
+      await getEquipments(true);
+      await updateModal();
+    });
+  }
 
   document
     .querySelector<HTMLInputElement>(`#${CHECKBOX_HIGHLIGHT_BUILDINGS_OF_DISPATCH_ID}`)
@@ -136,6 +148,7 @@ const init = (): void => {
 export const updateModal = async () => {
   const buildings = await getBuildings();
   const vehicles = await getVehicles();
+  const equipments = await getEquipments();
 
   const buildingState = document.getElementById(BUILDING_STATE_ID);
   if (buildingState) {
@@ -144,6 +157,10 @@ export const updateModal = async () => {
   const vehicleState = document.getElementById(VEHICLES_STATE_ID);
   if (vehicleState) {
     vehicleState.innerText = dayjs(vehicles.metadata.timestamp).format("DD.MM.YYYY HH:mm:ss");
+  }
+  const equipmentState = document.getElementById(EQUIPMENTS_STATE_ID);
+  if (equipmentState) {
+    equipmentState.innerText = dayjs(equipments.metadata.timestamp).format("DD.MM.YYYY HH:mm:ss");
   }
 
   const dispatchSelect = document.getElementById(SELECT_DISPATCH_CENTER_ID);
@@ -268,6 +285,23 @@ export const renderModal = () => {
   vehiclesTxtDate.id = VEHICLES_STATE_ID;
   vehiclesTxtDate.innerText = "Date missing";
   cacheInfo.appendChild(vehiclesTxtDate);
+
+  const refreshEquipmentsBtn = document.createElement("button");
+  refreshEquipmentsBtn.id = EQUIPMENTS_STATE_REFRESH_BTN_ID;
+  refreshEquipmentsBtn.classList.add("btn");
+  refreshEquipmentsBtn.classList.add("btn-xs");
+  refreshEquipmentsBtn.classList.add("btn-default");
+  refreshEquipmentsBtn.title = "Reload Equipments";
+  refreshEquipmentsBtn.innerHTML = `<span class="glyphicon glyphicon-repeat"></span>`;
+
+  cacheInfo.appendChild(refreshEquipmentsBtn);
+  const equipmentsTxt = document.createElement("strong");
+  equipmentsTxt.innerText = "Vehicle State:";
+  cacheInfo.appendChild(equipmentsTxt);
+  const equipmentsTxtDate = document.createElement("span");
+  equipmentsTxtDate.id = EQUIPMENTS_STATE_ID;
+  equipmentsTxtDate.innerText = "Date missing";
+  cacheInfo.appendChild(equipmentsTxtDate);
 
   const footerColRight = document.createElement("div");
   footerColRight.classList.add("col-md-4");
