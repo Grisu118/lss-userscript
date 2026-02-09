@@ -1,3 +1,3 @@
 export * from "./dto";
-export * from "./VehicleType";
+export * from "./EquipmentType";
 export * from "./api";
