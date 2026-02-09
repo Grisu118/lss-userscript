@@ -4,6 +4,7 @@ export enum LSS_INDEXED_DB_KEYS {
   BUILDINGS = "buildings",
   MISSIONS = "missions",
   VEHICLES = "vehicles",
+  EQUIPMENTS = "equipments",
   METADATA = "metadata",
 }
 
@@ -14,7 +15,7 @@ export interface StoredValue<ID, T> {
 
 class IndexedDBWrapper {
   private dbName = "ls42.lss-cache";
-  private version = 1;
+  private version = 2;
   private db: IDBDatabase | null = null;
 
   async init(): Promise<void> {
@@ -41,6 +42,9 @@ class IndexedDBWrapper {
         }
         if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.VEHICLES)) {
           db.createObjectStore(LSS_INDEXED_DB_KEYS.VEHICLES, { keyPath: "id" });
+        }
+        if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.EQUIPMENTS)) {
+          db.createObjectStore(LSS_INDEXED_DB_KEYS.EQUIPMENTS, { keyPath: "id" });
         }
         if (!db.objectStoreNames.contains(LSS_INDEXED_DB_KEYS.METADATA)) {
           db.createObjectStore(LSS_INDEXED_DB_KEYS.METADATA, { keyPath: "id" });

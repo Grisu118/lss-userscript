@@ -8,4 +8,5 @@ export enum EquipmentType {
   HOSE_WATER = "hose_water",
   OIL = "oil",
   STORM = "storm",
+  FOAM = "foam",
 }

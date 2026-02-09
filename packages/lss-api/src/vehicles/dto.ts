@@ -1,4 +1,4 @@
-import { EquipmentType } from "./EquipmentType";
+import { EquipmentType } from "../equipments";
 
 export interface Vehicle {
   id: number;
@@ -20,11 +20,11 @@ export interface Vehicle {
   queued_mission_id?: string;
   image_url_static: string;
   image_url_animated: string;
-  equipments: Equipment[];
+  equipments: SparseEquipment[];
   tractive_random: boolean;
 }
 
-export interface Equipment {
+export interface SparseEquipment {
   caption: string;
   size: number;
   equipment_type: EquipmentType;
