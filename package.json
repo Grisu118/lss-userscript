@@ -14,7 +14,7 @@
     "@nx/web": "22.4.5",
     "@swc-node/register": "~1.11.1",
     "@swc/core": "~1.13.5",
-    "@swc/helpers": "~0.5.17",
+    "@swc/helpers": "~0.5.18",
     "@types/leaflet": "^1.9.21",
     "@vitest/ui": "4.0.9",
     "eslint": "~9.34.0",
