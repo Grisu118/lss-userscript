@@ -10,7 +10,7 @@
     "@nx/eslint": "22.4.5",
     "@nx/js": "22.4.5",
     "@nx/vite": "22.4.5",
-    "@nx/vitest": "22.4.5",
+    "@nx/vitest": "22.5.0",
     "@nx/web": "22.4.5",
     "@swc-node/register": "~1.11.1",
     "@swc/core": "~1.13.5",
