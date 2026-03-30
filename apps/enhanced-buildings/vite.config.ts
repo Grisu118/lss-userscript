@@ -15,6 +15,7 @@ export default defineConfig({
         author: "Grisu118",
         description: "Verbessert die Gebäude Ansicht",
         updateURL: "https://github.com/Grisu118/lss-userscript/releases/latest/download/enhanced-buildings.user.js",
+        grant: ["unsafeWindow"],
       },
     }),
     nxViteTsPaths(),
