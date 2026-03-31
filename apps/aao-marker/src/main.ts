@@ -7,12 +7,13 @@ const CALCULATE_TIME = !!document.querySelector(".aao_timer");
 const MATCH_CLASS_NAME = "ls42-lss-aao-match";
 
 const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
-  aao_available(Number.parseInt(statusBtn.getAttribute("aao_id") ?? "-1"), CALCULATE_TIME);
+  const result = aao_available(Number.parseInt(statusBtn.getAttribute("aao_id") ?? "-1"), CALCULATE_TIME);
+  console.log("applyAAOStatus", result);
 
   const aaoElem = document.querySelector<HTMLAnchorElement>(`.aao.${MATCH_CLASS_NAME}`);
 
   if (aaoElem) {
-    const aaoAvailable = aaoElem.children.item(0)?.className?.includes("label-success") ?? false;
+    const aaoAvailable = result.all_ok;
     const medicIncluded = checkMedicIncluded(aaoElem);
 
     statusBtn.classList.remove("btn-success");
@@ -93,7 +94,11 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
     if (vehicleListStep) {
       const observer = new MutationObserver(() => {
         if (aaoStatusBtn) {
-          applyAAOStatus(aaoStatusBtn);
+          setTimeout(() => {
+            console.log("applying aao status within timeout");
+            applyAAOStatus(aaoStatusBtn!);
+            // requires high time, not sure why
+          }, 2500);
         }
       });
       observer.observe(vehicleListStep, { childList: true, subtree: true });
@@ -125,11 +130,6 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
       case "v":
         applyMatchedAAO();
         ev.stopPropagation();
-        break;
-      case "n":
-        if (aaoStatusBtn) {
-          ev.stopPropagation();
-        }
         break;
     }
   });
