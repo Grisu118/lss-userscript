@@ -5,14 +5,16 @@ const sanitizeString = (txt: string): string => txt.replace(/[#-.]|[[-^]|[?|{}]/
 const CALCULATE_TIME = !!document.querySelector(".aao_timer");
 
 const MATCH_CLASS_NAME = "ls42-lss-aao-match";
+const MAX_AAO_RETRIES = 6;
 
 const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
-  aao_available(Number.parseInt(statusBtn.getAttribute("aao_id") ?? "-1"), CALCULATE_TIME);
+  const result = aao_available(Number.parseInt(statusBtn.getAttribute("aao_id") ?? "-1"), CALCULATE_TIME);
+  console.log("applyAAOStatus", result);
 
   const aaoElem = document.querySelector<HTMLAnchorElement>(`.aao.${MATCH_CLASS_NAME}`);
 
   if (aaoElem) {
-    const aaoAvailable = aaoElem.children.item(0)?.className?.includes("label-success") ?? false;
+    const aaoAvailable = result.all_ok;
     const medicIncluded = checkMedicIncluded(aaoElem);
 
     statusBtn.classList.remove("btn-success");
@@ -85,18 +87,78 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
     aaoStatusBtn.className = "btn btn-xs btn-block";
     aaoStatusBtn.addEventListener("click", () => applyMatchedAAO());
 
-    applyAAOStatus(aaoStatusBtn);
-
     parentElem?.prepend(aaoStatusBtn);
 
     const vehicleListStep = document.getElementsByClassName("missing_vehicles_load").item(0);
     if (vehicleListStep) {
+      let retryCount = 0;
+      let activeRunId = 0;
+      let pendingTimeoutId: number | undefined;
+
+      const scheduleAAOCheck = () => {
+        activeRunId += 1;
+        const runId = activeRunId;
+
+        if (pendingTimeoutId !== undefined) {
+          window.clearTimeout(pendingTimeoutId);
+        }
+
+        pendingTimeoutId = window.setTimeout(async () => {
+          // ignore stale scheduled runs
+          if (runId !== activeRunId) {
+            return;
+          }
+
+          console.log("requestAnimationFrame");
+          const jobs: Job[] = [];
+          let cache: AAOAvailableResult | undefined;
+
+          // aao check job
+          jobs.push({
+            type: "regular",
+            func: () => {
+              console.log("checking aao status");
+              cache = aao_available(aaoId, false);
+              console.log("checking aao status done", cache);
+            },
+          });
+
+          jobs.push({
+            type: "reflow",
+            func: () => {
+              // ignore stale runs if a newer observer event happened
+              if (runId !== activeRunId) {
+                return;
+              }
+
+              if (cache && cache.max_time > 0) {
+                console.log("reflow: checking aao status done", cache);
+                retryCount = 0;
+                if (aaoStatusBtn) {
+                  applyAAOStatus(aaoStatusBtn);
+                }
+              } else if (retryCount < MAX_AAO_RETRIES) {
+                retryCount += 1;
+                console.log(`requeue AAO check ${retryCount}/${MAX_AAO_RETRIES}`);
+                scheduleAAOCheck();
+              } else {
+                console.log("AAO check stopped after max retries", MAX_AAO_RETRIES);
+              }
+            },
+          });
+
+          await runYieldingJobs(jobs);
+        }, 500);
+      };
+
       const observer = new MutationObserver(() => {
         if (aaoStatusBtn) {
-          applyAAOStatus(aaoStatusBtn);
+          scheduleAAOCheck();
         }
       });
       observer.observe(vehicleListStep, { childList: true, subtree: true });
+      // schedule a first check, as first result is not always correct
+      scheduleAAOCheck();
     }
   }
 
@@ -125,11 +187,6 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
       case "v":
         applyMatchedAAO();
         ev.stopPropagation();
-        break;
-      case "n":
-        if (aaoStatusBtn) {
-          ev.stopPropagation();
-        }
         break;
     }
   });
