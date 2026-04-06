@@ -38,5 +38,6 @@
         "testTargetName": "test"
       }
     }
-  ]
+  ],
+  "analytics": false
 }
