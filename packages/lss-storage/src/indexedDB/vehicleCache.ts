@@ -13,6 +13,6 @@ export const getVehicles = async (force?: boolean): Promise<CachedVehicles> => {
   return await CACHE_HANDLER.getAll(force);
 };
 
-export const getVehicle = async (id: string, force?: boolean): Promise<CacheEntry<Vehicle | null>> => {
-  return await CACHE_HANDLER.get(id, force);
+export const getVehicle = async (id: number, force?: boolean): Promise<CacheEntry<Vehicle | null>> => {
+  return await CACHE_HANDLER.get(id.toString(), force);
 };
