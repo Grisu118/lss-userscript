@@ -3,15 +3,17 @@ import { InlineMarkdownEditor } from "./InlineMarkdownEditor";
 import { LinkEditor } from "./LinkEditor";
 
 export const BuildingApp = async () => {
+  const regex = /\/buildings\/(\d+).*/;
   // extract building id from url
-  const buildingId = parseInt(window.location.pathname.split("/").pop() ?? "");
+  const buildingId = parseInt(window.location.pathname.match(regex)?.[1] ?? "");
   if (isNaN(buildingId)) {
     throw new Error("Could not extract building id from url");
   }
 
   const parentContainer = document.querySelector<HTMLDataListElement>(".container-fluid > .dl-horizontal");
   if (!parentContainer) {
-    throw new Error("Could not find parent container");
+    // not relevant on this page
+    return;
   }
 
   createOrGetElement(parentContainer, "dt", "enh-notes-link-label", "Link:");
