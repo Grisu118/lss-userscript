@@ -182,4 +182,5 @@ export enum VehicleType {
   THW_MzGW_FGR_BRB = 181,
   THW_CRANE = 182,
   THW_ANH_PLATFORM_FGR_BRB = 183,
+  PD_FUSTW_AP = 184,
 }

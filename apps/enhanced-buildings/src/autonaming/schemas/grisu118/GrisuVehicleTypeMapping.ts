@@ -78,6 +78,7 @@ export const grisuVehicleTypeMapping: VehicleTypeMapping = {
   // police
   [VehicleType.PD_FUSTW_DGL]: "KW",
   [VehicleType.PD_FUSTW]: "PW",
+  [VehicleType.PD_FUSTW_AP]: "PW",
   [VehicleType.PD_BIKE]: "MP",
   [VehicleType.PD_DHuFKW]: "DHW",
   [VehicleType.PD_ZSTW]: "ZPW",
@@ -124,5 +125,5 @@ export const grisuVehicleTypeMapping: VehicleTypeMapping = {
   [VehicleType.THW_MTW_OV]: "PTF",
   [VehicleType.THW_MzGW_FGR_BRB]: "BBF",
   [VehicleType.THW_CRANE]: "KRF",
-  [VehicleType.THW_ANH_PLATFORM_FGR_BRB]: "BBA"
+  [VehicleType.THW_ANH_PLATFORM_FGR_BRB]: "BBA",
 };

@@ -20,5 +20,6 @@ export enum BuildingType {
   RESCUE_DOGS = 21,
   HORSE_UNIT = 24,
   ALPINE_RESCUE = 25,
+  HIGHWAY_PATROL = 29,
   // TODO
 }

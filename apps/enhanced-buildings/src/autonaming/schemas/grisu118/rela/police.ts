@@ -11,8 +11,12 @@ export const relaPoliceStation: Schema = {
       vehicleTypes: [VehicleType.PD_FUSTW_DGL],
     },
     {
-      numberRange: r(410, 424),
+      numberRange: r(410, 419),
       vehicleTypes: [VehicleType.PD_FUSTW],
+    },
+    {
+      numberRange: r(420, 424),
+      vehicleTypes: [VehicleType.PD_FUSTW_AP],
     },
     {
       numberRange: r(425, 427),
