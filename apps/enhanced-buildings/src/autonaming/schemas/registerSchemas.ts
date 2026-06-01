@@ -5,7 +5,7 @@ import {
   agPoliceStation,
   agRegionalPoliceStation,
   agRegionalPoliceStation2,
-} from "./grisu118/canton/police";
+} from "./grisu118/canton/ag/police";
 import { grisuVehicleTypeMapping } from "./grisu118/GrisuVehicleTypeMapping";
 import { relaFireDepartment } from "./grisu118/rela/fire";
 import { relaMedic, relaSeg } from "./grisu118/rela/medic";
@@ -15,6 +15,18 @@ import { zsoSeg } from "./grisu118/zso/medic";
 import { relaHeavyRescue } from "./grisu118/rela/heavy_rescue";
 import { zsoHeavyRescue } from "./grisu118/zso/heavy_rescue";
 import { nsnwPoliceStation } from "./grisu118/nsnw/police";
+import {
+  luFederalPoliceStation,
+  luPoliceStation,
+  luPoliceStation1,
+  luPoliceStation2,
+} from "./grisu118/canton/lu/police";
+import {
+  blFederalPoliceStation,
+  blPoliceStation,
+  blPoliceStation1,
+  blPoliceStation2,
+} from "./grisu118/canton/bl/police";
 
 export const registerSchemas = () => {
   SchemaRegistry.INSTANCE.registerGlobalVehicleTypeMapping(grisuVehicleTypeMapping);
@@ -35,5 +47,17 @@ export const registerSchemas = () => {
     nsnwPoliceStation,
     zsoSeg,
     zsoHeavyRescue,
+
+    // lu
+    luPoliceStation,
+    luPoliceStation1,
+    luPoliceStation2,
+    luFederalPoliceStation,
+
+    // bl
+    blPoliceStation,
+    blPoliceStation1,
+    blPoliceStation2,
+    blFederalPoliceStation,
   );
 };

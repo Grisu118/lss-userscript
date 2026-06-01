@@ -1,6 +1,6 @@
 import { BuildingType } from "@lss/api";
-import { Schema } from "../../Schema";
-import { relaFederalPoliceStation, relaPoliceStation } from "../rela/police";
+import { Schema } from "../../../Schema";
+import { relaFederalPoliceStation, relaPoliceStation } from "../../rela/police";
 
 export const agPoliceStation: Schema = {
   buildingType: BuildingType.POLICE_STATION,
