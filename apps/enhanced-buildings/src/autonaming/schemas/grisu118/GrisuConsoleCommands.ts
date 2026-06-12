@@ -2,7 +2,8 @@ import { BuildingType, changeTractiveVehicle, changeVehicleType, Vehicle, Vehicl
 import { getBuildings, getVehicles } from "@lss/storage";
 import { GrisuCustomVehicleTypes } from "./GrisuCustomVehicleTypes";
 
-const THW_TRAILERS: Record<number, VehicleType> = {
+const TRAILER_MAPPINGS: Record<number, VehicleType> = {
+  // THW
   [VehicleType.THW_ANH_7]: VehicleType.THW_LKW7_LBW_FGR_WP,
   [VehicleType.THW_ANH_SWPU]: VehicleType.THW_MLW4,
   [VehicleType.THW_Anh_DLE]: VehicleType.THW_MLW5,
@@ -12,6 +13,10 @@ const THW_TRAILERS: Record<number, VehicleType> = {
   [VehicleType.THW_NEA200]: VehicleType.THW_LKW7_LBW_FGR_E,
   [VehicleType.THW_FUELA_TRAILER]: VehicleType.THW_FUEKOMKW,
   [VehicleType.THW_ANH_PLATFORM_FGR_BRB]: VehicleType.THW_MzGW_FGR_BRB,
+
+  // SEG
+  [VehicleType.MD_TESI_TRAILER]: VehicleType.MD_GW_TESI,
+  [VehicleType.MD_NEA50]: VehicleType.MD_LKW_TESI,
 };
 
 const applyTractiveVehicle = async (trailer: Vehicle, tractiveVehicle: Vehicle) => {
@@ -25,7 +30,7 @@ export const checkTractiveVehicle = async (trailer: Vehicle) => {
   const vehicles = await getVehicles();
   const vehiclesOfBuilding = Object.values(vehicles.data).filter((v) => v.building_id === trailer.building_id);
 
-  const tractiveVehicleType = THW_TRAILERS[trailer.vehicle_type];
+  const tractiveVehicleType = TRAILER_MAPPINGS[trailer.vehicle_type];
 
   const tractiveCandidates = vehiclesOfBuilding.filter((v) => v.vehicle_type === tractiveVehicleType);
 
@@ -77,14 +82,14 @@ export const applyTHWCustomTypesAndTrailers = async (force: boolean = false) => 
       await changeVehicleType(vehicle.id, GrisuCustomVehicleTypes.THW_Anh7, true);
     }
 
-    if (vehicle.vehicle_type in THW_TRAILERS) {
+    if (vehicle.vehicle_type in TRAILER_MAPPINGS) {
       await checkTractiveVehicle(vehicle);
     }
   }
   console.log("Done");
 };
 
-export const applySEGRTWCustomType = async (force: boolean = false) => {
+export const applySEGRTWCustomTypeAndTrailers = async (force: boolean = false) => {
   const vehicles = await getVehicles(force);
   const buildings = await getBuildings(force);
 
@@ -99,6 +104,10 @@ export const applySEGRTWCustomType = async (force: boolean = false) => {
         console.log(`Changing ${vehicle.id} from ${vehicle.vehicle_type_caption} to ${GrisuCustomVehicleTypes.SEGRTW}`);
         await changeVehicleType(vehicle.id, GrisuCustomVehicleTypes.SEGRTW, true);
       }
+    }
+
+    if (vehicle.vehicle_type in TRAILER_MAPPINGS) {
+      await checkTractiveVehicle(vehicle);
     }
   }
   console.log("Done");

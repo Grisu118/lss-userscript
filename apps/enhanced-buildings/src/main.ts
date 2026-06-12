@@ -5,7 +5,7 @@ import { CachedBuildings, getBuildings } from "@lss/storage";
 import { autonaming } from "./autonaming/autonaming";
 import { renderBuildingsCounter } from "./counter/counter";
 import {
-  applySEGRTWCustomType,
+  applySEGRTWCustomTypeAndTrailers,
   applyTHWCustomTypesAndTrailers,
 } from "./autonaming/schemas/grisu118/GrisuConsoleCommands";
 
@@ -41,5 +41,5 @@ const loadBuildings = async (
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 (unsafeWindow as any).grisu118 = {
   applyTHWCustomTypesAndTrailers,
-  applySEGRTWCustomType,
+  applySEGRTWCustomTypeAndTrailers,
 };
