@@ -32,7 +32,7 @@
   "dependencies": {
     "@lightspots/storageprovider": "^2.0.1",
     "dayjs": "^1.11.20",
-    "dompurify": "^3.4.3",
+    "dompurify": "^3.4.11",
     "marked": "^18.0.3"
   }
 }
