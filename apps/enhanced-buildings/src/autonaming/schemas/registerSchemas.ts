@@ -27,6 +27,7 @@ import {
   blPoliceStation1,
   blPoliceStation2,
 } from "./grisu118/canton/bl/police";
+import { deFederalPoliceStation } from "./grisu118/germany/police";
 
 export const registerSchemas = () => {
   SchemaRegistry.INSTANCE.registerGlobalVehicleTypeMapping(grisuVehicleTypeMapping);
@@ -59,5 +60,8 @@ export const registerSchemas = () => {
     blPoliceStation1,
     blPoliceStation2,
     blFederalPoliceStation,
+
+    // germany
+    deFederalPoliceStation,
   );
 };
