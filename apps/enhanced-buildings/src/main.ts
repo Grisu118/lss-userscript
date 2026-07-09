@@ -7,6 +7,7 @@ import { renderBuildingsCounter } from "./counter/counter";
 import {
   applySEGRTWCustomTypeAndTrailers,
   applyTHWCustomTypesAndTrailers,
+  configureZMVehicles,
 } from "./autonaming/schemas/grisu118/GrisuConsoleCommands";
 
 const loadBuildings = async (
@@ -42,4 +43,5 @@ const loadBuildings = async (
 (unsafeWindow as any).grisu118 = {
   applyTHWCustomTypesAndTrailers,
   applySEGRTWCustomTypeAndTrailers,
+  configureZMVehicles,
 };

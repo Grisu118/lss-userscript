@@ -1,4 +1,4 @@
-import { BuildingType, changeTractiveVehicle, changeVehicleType, Vehicle, VehicleType } from "@lss/api";
+import { BuildingType, changeTractiveVehicle, changeVehicleType, modifyVehicle, Vehicle, VehicleType } from "@lss/api";
 import { getBuildings, getVehicles } from "@lss/storage";
 import { GrisuCustomVehicleTypes } from "./GrisuCustomVehicleTypes";
 
@@ -110,5 +110,36 @@ export const applySEGRTWCustomTypeAndTrailers = async (force: boolean = false) =
       await checkTractiveVehicle(vehicle);
     }
   }
+  console.log("Done");
+};
+
+export const configureZMVehicles = async (force: boolean = false) => {
+  const vehicles = await getVehicles(force);
+  const buildings = await getBuildings(force);
+
+  for (const vehicle of Object.values(vehicles.data)) {
+    const building = buildings.data[vehicle.building_id];
+    if (!(building && building.caption.startsWith("💶ZM "))) {
+      continue;
+    }
+
+    if (vehicle.vehicle_type === VehicleType.FD_HLF_20) {
+      // add FR custom vehicle type
+      console.debug(`Changing ${vehicle.id} from ${vehicle.vehicle_type_caption} to ${GrisuCustomVehicleTypes.FR}`);
+      await changeVehicleType(vehicle.id, GrisuCustomVehicleTypes.FR, true);
+    } else if (vehicle.vehicle_type === VehicleType.FD_MTW) {
+      console.debug(
+        `Changing ${vehicle.id} from ${vehicle.vehicle_type_caption} to ${GrisuCustomVehicleTypes.FR}, set max_personnel to 1`,
+      );
+      await modifyVehicle(vehicle.id, {
+        vehicle_type_caption: GrisuCustomVehicleTypes.FR,
+        vehicle_type_ignore_default_aao: true,
+        max_personnel: 1,
+      });
+    } else {
+      console.warn(`Skipping ${vehicle.id} with vehicle type ${vehicle.vehicle_type_caption}`);
+    }
+  }
+
   console.log("Done");
 };

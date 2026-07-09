@@ -3,4 +3,6 @@ export enum GrisuCustomVehicleTypes {
   SEGRTW = "SEGRTW",
   THW_SwPu = "THW_SwPu",
   THW_Anh7 = "THW_Anh7",
+  // First Responder units
+  FR = "FR",
 }
