@@ -20,6 +20,7 @@ export const grisuVehicleTypeMapping: VehicleTypeMapping = {
   [VehicleType.FD_KLF]: "KTLF",
   [VehicleType.FD_TLF_4000]: "TLF",
   [VehicleType.FD_TLF_16_45]: "TLF",
+  [VehicleType.FD_TLF_20_40]: "TLF",
   [VehicleType.FD_PTLF_4000]: "SLF",
   [VehicleType.FD_SLF]: "SLF",
   [VehicleType.FD_TLF_20_40SL]: "SLF",

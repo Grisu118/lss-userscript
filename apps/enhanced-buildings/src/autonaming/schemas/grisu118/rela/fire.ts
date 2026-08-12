@@ -146,7 +146,13 @@ export const relaFireDepartment: Schema = {
     },
     {
       numberRange: r(40),
-      vehicleTypes: [VehicleType.FD_GWH],
+      vehicleTypes: [
+        VehicleType.FD_GWH,
+        {
+          originalType: VehicleType.FD_GW_L2,
+          customType: "RET",
+        },
+      ],
     },
     {
       numberRange: r(41, 43),
