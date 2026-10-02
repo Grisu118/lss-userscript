@@ -61,10 +61,11 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
   }
 
   const aaoTabPane = document.querySelector<HTMLAnchorElement>(`.tab-pane:has(.aao.${MATCH_CLASS_NAME})`);
+  let aaoTabElem: HTMLAnchorElement | null = null;
   if (aaoTabPane) {
     // mark aao tab title
     const aaoCatId = aaoTabPane.id;
-    const aaoTabElem = document.querySelector<HTMLAnchorElement>(`#aao-tabs a[href="#${aaoCatId}"]`);
+    aaoTabElem = document.querySelector<HTMLAnchorElement>(`#aao-tabs a[href="#${aaoCatId}"]`);
     aaoTabElem?.classList?.add("ls42-lss-aao-category-match");
 
     // mark all tab-pane elements so that the darkening works
@@ -157,6 +158,62 @@ const applyAAOStatus = (statusBtn: HTMLAnchorElement) => {
         }
       });
       observer.observe(vehicleListStep, { childList: true, subtree: true });
+
+      // The game loads tab contents lazily, so aao_available() has no up-to-date data while the
+      // matched AAO's tab is inactive. After more vehicles are loaded, briefly activate that tab,
+      // re-check as soon as the game marks the AAO as available and switch back to the tab the
+      // user had open.
+      let aaoObserver: MutationObserver | undefined;
+      let restoreTimeoutId: number | undefined;
+      let previousTabElem: HTMLAnchorElement | null = null;
+
+      const restorePreviousTab = () => {
+        window.clearTimeout(restoreTimeoutId);
+        restoreTimeoutId = undefined;
+        aaoObserver?.disconnect();
+        // only switch back if the user did not change the tab in the meantime
+        if (previousTabElem && aaoTabElem?.parentElement?.classList.contains("active")) {
+          previousTabElem.click();
+        }
+        previousTabElem = null;
+      };
+
+      const vehicleObserver = new MutationObserver(() => {
+        if (!aaoStatusBtn) {
+          return;
+        }
+        const aaoSpanElem = aaoTabElem ? document.getElementById(`available_aao_${aaoId}`) : null;
+        if (aaoTabElem && aaoSpanElem) {
+          const activeTabElem = document.querySelector<HTMLAnchorElement>("#aao-tabs li.active > a");
+          if (activeTabElem && activeTabElem !== aaoTabElem) {
+            console.log("vehicles loaded, temporarily activating aao tab", aaoTabElem.getAttribute("href"));
+            previousTabElem = activeTabElem;
+            aaoTabElem.click();
+          }
+          aaoObserver?.disconnect();
+          aaoObserver = new MutationObserver(() => {
+            if (aaoSpanElem.classList.contains("label-success")) {
+              console.log("aao is now available", aaoId);
+              restorePreviousTab();
+              retryCount = 0;
+              scheduleAAOCheck();
+            }
+          });
+          aaoObserver.observe(aaoSpanElem, { attributes: true, attributeFilter: ["class"] });
+          // switch back even if the aao never becomes available
+          window.clearTimeout(restoreTimeoutId);
+          restoreTimeoutId = window.setTimeout(() => {
+            restorePreviousTab();
+            retryCount = 0;
+            scheduleAAOCheck();
+          }, 2000);
+        } else {
+          retryCount = 0;
+          scheduleAAOCheck();
+        }
+      });
+      vehicleObserver.observe(vehicleListStep, { childList: true, subtree: true, characterData: true });
+
       // schedule a first check, as first result is not always correct
       scheduleAAOCheck();
     }
